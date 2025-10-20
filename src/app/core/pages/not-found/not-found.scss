@@ -1,0 +1,81 @@
+// 🎨 Variables
+$primary-color: #007bff;
+$secondary-color: #593c87;
+$text-light: #fff;
+$text-dark: #212529;
+$button-hover-bg: #e9ecef;
+$transition-speed: 0.3s;
+
+// 🧩 Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin fade-in($duration: 1.5s) {
+  animation: fadeIn $duration ease;
+}
+
+// 🌟 Styles
+.not-found-container {
+  @include flex-center;
+  height: 100vh;
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: $text-light;
+  text-align: center;
+  padding: 20px;
+
+  .not-found-content {
+    max-width: 500px;
+    @include fade-in();
+
+    h1 {
+      font-size: 8rem;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 4px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .home-button {
+      display: inline-block;
+      background-color: $text-light;
+      color: $primary-color;
+      padding: 10px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all $transition-speed ease;
+
+      &:hover {
+        background-color: $button-hover-bg;
+        color: darken($primary-color, 10%);
+      }
+    }
+  }
+}
+
+// ✨ Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
