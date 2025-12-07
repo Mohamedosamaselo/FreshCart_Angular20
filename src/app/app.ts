@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FlowbitService } from './shared/services/flowbit-service';
+import { FlowbitService } from './shared/services/Flowbit/flowbit-service';
 import { Navbar } from "./core/layout/navbar/navbar";
 import { Footer } from "./core/layout/footer/footer";
 

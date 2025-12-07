@@ -8,15 +8,23 @@ module.exports = {
     extend: {
       colors: {
         'main': '#0aad0a',
-        'gray': '#919eab'
+        'gray': '#919eab',
+        'rating': '#ffc908'
       },
       container: {
-        center: true,
+        center: true,           // centers the container by default
+        padding: '5rem',        // adds default horizontal padding
+        screens: {
+          sm: '640px',
+          md: '768px',
+          lg: '1024px',
+          xl: '1280px',
+          '2xl': '1536px',
+        },
       },
     },
-  },
-  plugins: [
-    require('flowbite/plugin')
-  ],
+    plugins: [
+      require('flowbite/plugin')
+    ],
+  }
 }
-

@@ -1,0 +1,24 @@
+<div>
+  <div class="flex flex-wrap py-3 rounded-md">
+    <div class="w-9/12">
+      <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide>
+          <img src="images/slider-image-1.jpeg" class="h-[400px] w-full object-cover" alt="slider01">
+        </ng-template>
+
+        <ng-template carouselSlide>
+          <img src="images/slider-image-2.jpeg" class="h-[400px] w-full object-cover" alt="slider02">
+        </ng-template>
+
+        <ng-template carouselSlide>
+          <img src="images/slider-image-3.jpeg" class="h-[400px] w-full object-cover" alt="slider03">
+        </ng-template>
+      </owl-carousel-o>
+    </div>
+
+    <div class="w-3/12 flex flex-col gap-1">
+      <img src="images/banner-4.jpeg" class="w-full h-[200px] object-cover" alt="banner">
+      <img src="images/slider-image-1.jpeg" class="w-full h-[198px] object-cover" alt="banner">
+    </div>
+  </div>
+</div>
