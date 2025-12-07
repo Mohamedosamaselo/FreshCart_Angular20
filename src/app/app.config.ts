@@ -5,7 +5,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CarouselModule } from 'ngx-owl-carousel-o';
-import { Api_Token_Url } from './token/token';
+import { Api_Base_Url } from './token/token';
 
 
 
@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
     {
-      provide: Api_Token_Url,
+      provide: Api_Base_Url,
       useValue: `https://ecommerce.routemisr.com/api/v1`
     }
   ]

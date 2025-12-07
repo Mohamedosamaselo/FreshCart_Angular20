@@ -7,10 +7,11 @@ import { Subscription, timer } from 'rxjs';
 import { ILoginUser } from '../../../interfaces/ILoginUser';
 import { NgClass } from '@angular/common';
 import { CustomInput } from "../../../../shared/components/Ui/custom-input/custom-input";
+import { ErrorMessage } from "../../../../shared/components/Ui/error-message/error-message";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, NgClass, CustomInput],
+  imports: [ReactiveFormsModule, NgClass, CustomInput, ErrorMessage],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })

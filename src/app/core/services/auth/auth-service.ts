@@ -6,8 +6,9 @@ import { ILoginUser } from '../../interfaces/ILoginUser';
 import { ISignUpUser } from '../../interfaces/ISignUpUser_temp';
 import { jwtDecode } from 'jwt-decode';
 import { isPlatformBrowser } from '@angular/common';
-import { Api_Token_Url } from '../../../token/token';
-import { enviroment } from '../../../../environments/environment';
+import { Api_Base_Url } from '../../../token/token';
+import { enviroment } from '../../../environments/environment.prod';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,7 @@ export class AuthService {
   user: BehaviorSubject<any> = new BehaviorSubject(null);
   env = enviroment.BaseUrl;
   _platformId = inject(PLATFORM_ID);
-  _baseUrl = inject(Api_Token_Url);
-
+  _baseUrl = inject(Api_Base_Url); // using InjectionToken Idea
 
   constructor() {
     // get token from localStorage in runtime
@@ -29,15 +29,14 @@ export class AuthService {
         this.saveUser();
     }
   }
-
-
+  ////////////////////SignUp Method
   signup(UserData: ISignUpUser): Observable<any> {
     return this._http.post<any>(
       `${this._baseUrl}/auth/signup`,
       UserData
     );
   }
-
+  ////////////////////Login Method
   login(UserData: ILoginUser): Observable<any> {
     return this._http.post(
       `${this._baseUrl}/auth/signin`,
@@ -45,6 +44,7 @@ export class AuthService {
     );
   }
 
+  ////////////////////SaveUser in Local Storage Method
   saveUser(): void {
     this.token = JSON.stringify(localStorage.getItem('UserToken'));
 
@@ -53,4 +53,7 @@ export class AuthService {
     this.user.next(data) // update User
 
   }
+
+
+
 }

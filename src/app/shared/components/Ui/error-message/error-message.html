@@ -1,0 +1,23 @@
+<!-- name Error Alert  -->
+@if (Control?.invalid && Control?.touched ) {
+<div class="text-red-600 text-xs mt-1">
+  @if (Control?.errors?.['required'])
+  {
+  <span>this input is required</span>
+  }
+  @else if (Control?.errors?.['minlength'])
+  {
+  <span> At least 3 characters</span>
+  }
+  @else if (Control?.errors?.['maxlength'])
+  {
+  <span>max charcter length is 20 characters</span>
+  }
+  @else if (Control?.errors?.['email']) {
+  <span>this input must contain only email </span>
+  }
+  @else if (Control?.errors?.['pattern']) {
+  <span>this input must contain uppercase, lowercase, number and special character</span>
+  }
+</div>
+}
