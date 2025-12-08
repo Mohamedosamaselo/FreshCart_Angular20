@@ -1,4 +1,9 @@
-import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
@@ -6,8 +11,6 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { Api_Base_Url } from './token/token';
-
-
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,11 +23,12 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     {
       provide: Api_Base_Url,
-      useValue: `https://ecommerce.routemisr.com/api/v1`
-    }
-  ]
+      useValue: `https://ecommerce.routemisr.com/api/v1`,
+    },
+  ],
 };
-function provideAnimattions(): import("@angular/core").Provider | import("@angular/core").EnvironmentProviders {
+function provideAnimattions():
+  | import('@angular/core').Provider
+  | import('@angular/core').EnvironmentProviders {
   throw new Error('Function not implemented.');
 }
-

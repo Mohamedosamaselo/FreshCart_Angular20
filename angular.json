@@ -25,8 +25,8 @@
             ],
             "fileReplacements": [
               {
-                "replace": "./src/app/environments/environment.ts",
-                "with": "./src/app//environments/environment.prod.ts"
+                "replace": "../FreshCart/src/app/environments/environment.ts",
+                "with": "../FreshCart/src/app/environments/environment.prod.ts"
               }
             ],
             "tsConfig": "tsconfig.app.json",

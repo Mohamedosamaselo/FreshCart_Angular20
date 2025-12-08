@@ -5,22 +5,22 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators
-} from "@angular/forms";
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth-service';
 import { ISignUpUser } from '../../../interfaces/ISignUpUser_temp';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ErrorMessage } from "../../../../shared/components/Ui/error-message/error-message";
+import { ErrorMessage } from '../../../../shared/components/Ui/error-message/error-message';
+import { CustomInputComponent } from '../../../../shared/components/Ui/custom-input-component/custom-input-component';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, NgClass, ErrorMessage],
+  imports: [ReactiveFormsModule, NgClass, ErrorMessage, CustomInputComponent],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
 export class Register implements OnInit, OnDestroy {
-
   /////////////////////////////////////// variables
   registerForm!: FormGroup;
   formBuilder = inject(FormBuilder);
@@ -29,7 +29,7 @@ export class Register implements OnInit, OnDestroy {
   RegisterData!: ISignUpUser; ////////// registerForm.value()
   ApiError!: string;
   userToke!: string;
-  subscrprion !: Subscription;
+  subscrprion: Subscription = new Subscription();
 
   ////////////////////////////////////   Control Flags
   showPassword: boolean = false;
@@ -38,7 +38,6 @@ export class Register implements OnInit, OnDestroy {
   //////////////////////////////////// Template Reference to actual inputs
   @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
   @ViewChild('rePasswordInput') rePasswordInput!: ElementRef<HTMLInputElement>;
-
 
   ngOnInit(): void {
     this.initializeRegisterForm();
@@ -87,8 +86,7 @@ export class Register implements OnInit, OnDestroy {
       this.showPassword = !this.showPassword;
       const input = this.passwordInput.nativeElement as HTMLInputElement;
       input.type = this.showPassword ? 'text' : 'password'; // if true make type text else change type to password
-    }
-    else {
+    } else {
       this.showRePassword = !this.showRePassword;
       const input = this.rePasswordInput.nativeElement as HTMLInputElement;
       input.type = this.showRePassword ? 'text' : 'password'; // if true make type text else change type to password
@@ -114,7 +112,6 @@ export class Register implements OnInit, OnDestroy {
 
   ////////////////////////////////////////////// submit Method
   onSubmit(): void {
-
     this.isLoading = true;
 
     if (this.registerForm.valid) {
@@ -124,32 +121,28 @@ export class Register implements OnInit, OnDestroy {
       this.subscrprion = this.authService.signup(this.RegisterData).subscribe({
         next: (res) => {
           this.isLoading = false;
-          if (res.message === 'success') // if account Succcessfuly Registered we will navigate user to login page
-          {
-            this.router.navigate(['/auth'])
-            this.userToke = res.token
+          if (res.message === 'success') {
+            // if account Succcessfuly Registered we will navigate user to login page
+            this.router.navigate(['/auth']);
+            this.userToke = res.token;
             // console.log(this.userToke);
-
           }
         },
         error: (err) => {
           console.log(err.error.message);
           this.ApiError = err.error.message;
           this.isLoading = false;
-        }
-      })
+        },
+      });
       this.registerForm.reset();
-    }
-    else {
+    } else {
       console.log('Form is inValid');
       this.registerForm.markAllAsTouched();
     }
   }
 
-
-
   // Cleaning Up
   ngOnDestroy(): void {
-    this.subscrprion.unsubscribe();
+    if (this.subscrprion) this.subscrprion.unsubscribe();
   }
 }

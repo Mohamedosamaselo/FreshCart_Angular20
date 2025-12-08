@@ -9,12 +9,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { Api_Base_Url } from '../../../token/token';
 import { enviroment } from '../../../environments/environment.prod';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   _http = inject(HttpClient);
   token!: string;
   user: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -25,35 +23,24 @@ export class AuthService {
   constructor() {
     // get token from localStorage in runtime
     if (isPlatformBrowser(this._platformId)) {
-      if (localStorage.getItem('UserToken'))
-        this.saveUser();
+      if (localStorage.getItem('UserToken')) this.saveUser();
     }
   }
   ////////////////////SignUp Method
   signup(UserData: ISignUpUser): Observable<any> {
-    return this._http.post<any>(
-      `${this._baseUrl}/auth/signup`,
-      UserData
-    );
+    return this._http.post<any>(`${this._baseUrl}/auth/signup`, UserData);
   }
   ////////////////////Login Method
   login(UserData: ILoginUser): Observable<any> {
-    return this._http.post(
-      `${this._baseUrl}/auth/signin`,
-      UserData
-    );
+    return this._http.post(`${this._baseUrl}/auth/signin`, UserData);
   }
 
   ////////////////////SaveUser in Local Storage Method
   saveUser(): void {
     this.token = JSON.stringify(localStorage.getItem('UserToken'));
 
-    const data = jwtDecode(this.token) // decode token
+    const data = jwtDecode(this.token); // decode token
 
-    this.user.next(data) // update User
-
+    this.user.next(data); // update User
   }
-
-
-
 }

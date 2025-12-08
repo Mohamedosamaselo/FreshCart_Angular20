@@ -4,16 +4,13 @@ import { Observable } from 'rxjs';
 import { enviroment } from '../../../environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
   private _http = inject(HttpClient);
   env = enviroment.BaseUrl;
 
-
   getAllProducts(): Observable<any> {
     return this._http.get(`${this.env}/products`);
   }
-
-
 }

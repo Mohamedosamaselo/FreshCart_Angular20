@@ -8,13 +8,13 @@ export const routes: Routes = [
     component: AuthLayout,
     children: [
       {
+        path: '',
+        loadComponent: () => import('./core/pages/Authentication/login/login').then((c) => c.Login),
+      },
+      {
         path: 'register',
         loadComponent: () =>
           import('./core/pages/Authentication/register/register').then((c) => c.Register),
-      },
-      {
-        path: '',
-        loadComponent: () => import('./core/pages/Authentication/login/login').then((c) => c.Login),
       },
       {
         path: 'forgetPassword',
@@ -25,6 +25,7 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: '',
     loadComponent: () => import('./core/pages/Authentication/login/login').then((c) => c.Login),
@@ -49,12 +50,6 @@ export const routes: Routes = [
     path: 'cart',
     loadComponent: () => import('./features/pages/cart/cart').then((c) => c.Cart),
   },
-
-
-
-
-
-
 
   {
     path: '**',

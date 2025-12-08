@@ -6,14 +6,14 @@ import { ElementSchemaRegistry } from '@angular/compiler';
 import { Subscription, timer } from 'rxjs';
 import { ILoginUser } from '../../../interfaces/ILoginUser';
 import { NgClass } from '@angular/common';
-import { CustomInput } from "../../../../shared/components/Ui/custom-input/custom-input";
-import { ErrorMessage } from "../../../../shared/components/Ui/error-message/error-message";
+import { ErrorMessage } from '../../../../shared/components/Ui/error-message/error-message';
+import { CustomInputComponent } from '../../../../shared/components/Ui/custom-input-component/custom-input-component';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, NgClass, CustomInput, ErrorMessage],
+  imports: [ReactiveFormsModule, NgClass, CustomInputComponent, ErrorMessage, CustomInputComponent],
   templateUrl: './login.html',
-  styleUrl: './login.scss'
+  styleUrl: './login.scss',
 })
 export class Login {
   /////////////////////////////////////// variables
@@ -24,45 +24,42 @@ export class Login {
   LoginData!: ILoginUser; ////////// loginForm.value()
   ApiError!: string;
   userToke!: string;
-  subscrprion !: Subscription;
+  subscrprion: Subscription = new Subscription();
 
   ////////////////////////////////////   Control Flags
   showPassword: boolean = false;
   showRePassword: boolean = false;
   isLoading: boolean = false;
   //////////////////////////////////// Template Reference to actual inputs
-  @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;;
-
+  @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
     this.initializeloginForm();
   }
   ///////////////////////////////////////// initiLize loginForm
   initializeloginForm(): void {
-    this.loginForm = this.fb.group(
-      {
-        email: [
-          '',
-          [
-            Validators.required,
-            Validators.email,
-            Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
-          ],
+    this.loginForm = this.fb.group({
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
         ],
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(6),
-            Validators.pattern(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/
-            ),
-          ],
-        ]
-      }
-    );
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/
+          ),
+        ],
+      ],
+    });
   }
-  ////////////////////////////////////////  Generic Passwordtoggle method
+  /////////////////////////  Generic Passwordtoggle method //////////////////////////////
   togglePasswordVisibility(type: 'password' | 'rePassword'): void {
     if (type === 'password') {
       this.showPassword = !this.showPassword;
@@ -71,16 +68,13 @@ export class Login {
     }
   }
 
-
-
-  /////////////////////////////////////////// getter Method to get FormControls
+  /////////////////////////// getter Method to get FormControls ////////////////////////
   get GetFormControl() {
     return this.loginForm.controls;
   }
 
-  ////////////////////////////////////////////// submit Method
+  /////////////////////////// submit Method////////////////////////////
   onSubmit(): void {
-
     this.isLoading = true;
 
     if (this.loginForm.valid) {
@@ -91,35 +85,30 @@ export class Login {
         next: (res) => {
           this.isLoading = false;
           if (res.message === 'success') {
-
-            timer(2000).subscribe(() => { // it will waiting for  2 seconds then it navigate him
-              this.router.navigate(['/home']) // if account Succcessfuly Registered we will navigate user to login page
-            })
+            timer(2000).subscribe(() => {
+              // it will waiting for  2 seconds then it navigate him
+              this.router.navigate(['/home']); // if account Succcessfuly Registered we will navigate user to login page
+            });
 
             // this.userToke = res.token
-            localStorage.setItem('UserToken', res.token) // set token in localStorage then i will get it again in authService to save the user
-
+            localStorage.setItem('UserToken', res.token); // set token in localStorage then i will get it again in authService to save the user
           }
         },
         error: (err) => {
           console.log(err.error.message);
-          this.ApiError = err.error.message;// store  it then i will display it in the top of the form
+          this.ApiError = err.error.message; // store  it then i will display it in the top of the form
           this.isLoading = false;
-
-        }
-      })
+        },
+      });
       this.loginForm.reset();
-    }
-    else {
+    } else {
       console.log('Form is inValid');
       this.loginForm.markAllAsTouched();
     }
   }
 
-
-
-  // Cleaning Up
+  //////////////////////////// Cleaning Up///////////////////////////////////
   ngOnDestroy(): void {
-    this.subscrprion.unsubscribe();
+    if (this.subscrprion) this.subscrprion.unsubscribe();
   }
 }
