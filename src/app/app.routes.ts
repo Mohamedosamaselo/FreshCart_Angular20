@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { Component } from '@angular/core';
 import { AuthLayout } from './core/layout/auth-layout/auth-layout';
 import { authGuard } from './core/gaurds/auth-gaurd-guard';
 import { authRedirectGuard } from './core/gaurds/auth-redirect-guard';
@@ -28,7 +27,6 @@ export const routes: Routes = [
       },
     ],
   },
-
   {
     path: '',
     loadComponent: () => import('./core/pages/Authentication/login/login').then((c) => c.Login),
@@ -52,6 +50,12 @@ export const routes: Routes = [
     path: 'products',
     canActivate: [authGuard],
     loadComponent: () => import('./features/pages/product/product').then((c) => c.Product),
+  },
+  {
+    path: 'productsDetails/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/pages/product-details/product-details').then((c) => c.ProductDetails),
   },
 
   {
