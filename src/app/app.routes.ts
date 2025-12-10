@@ -1,11 +1,14 @@
 import { Routes } from '@angular/router';
 import { Component } from '@angular/core';
 import { AuthLayout } from './core/layout/auth-layout/auth-layout';
+import { authGuard } from './core/gaurds/auth-gaurd-guard';
+import { authRedirectGuard } from './core/gaurds/auth-redirect-guard';
 
 export const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayout,
+    canActivate: [authRedirectGuard],
     children: [
       {
         path: '',
@@ -31,23 +34,29 @@ export const routes: Routes = [
     loadComponent: () => import('./core/pages/Authentication/login/login').then((c) => c.Login),
   },
   {
+    path: 'home',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/pages/home/home').then((c) => c.Home),
+  },
+  {
     path: 'brands',
+    canActivate: [authGuard],
     loadComponent: () => import('./features/pages/brand/brand').then((c) => c.Brand),
   },
   {
     path: 'categories',
+    canActivate: [authGuard],
     loadComponent: () => import('./features/pages/categories/categories').then((c) => c.Categories),
   },
   {
     path: 'products',
+    canActivate: [authGuard],
     loadComponent: () => import('./features/pages/product/product').then((c) => c.Product),
   },
-  {
-    path: 'home',
-    loadComponent: () => import('./features/pages/home/home').then((c) => c.Home),
-  },
+
   {
     path: 'cart',
+    canActivate: [authGuard],
     loadComponent: () => import('./features/pages/cart/cart').then((c) => c.Cart),
   },
 

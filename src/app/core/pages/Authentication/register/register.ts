@@ -1,148 +1,167 @@
 import { NgClass } from '@angular/common';
-import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth-service';
-import { ISignUpUser } from '../../../interfaces/ISignUpUser_temp';
+import { SignUpUser } from '../../../interfaces/SignUpUser_temp';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { ErrorMessage } from '../../../../shared/components/Ui/error-message/error-message';
-import { CustomInputComponent } from '../../../../shared/components/Ui/custom-input-component/custom-input-component';
+// ====================================
+// CONSTANTS
+// ====================================
+
+const VALIDATION_PATTERNS = {
+  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+  password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/,
+  egyptianPhone: /^01[0125][0-9]{8}$/,
+} as const;
+
+const FIELD_CONSTRAINTS = {
+  name: { min: 3, max: 50 },
+  password: { min: 6 },
+} as const;
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, NgClass, ErrorMessage, CustomInputComponent],
+  imports: [ReactiveFormsModule, NgClass, ErrorMessage],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-export class Register implements OnInit, OnDestroy {
-  /////////////////////////////////////// variables
+export class Register {
+  // Dependency Injection
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  // Form
   registerForm!: FormGroup;
-  formBuilder = inject(FormBuilder);
-  authService = inject(AuthService);
-  router = inject(Router);
-  RegisterData!: ISignUpUser; ////////// registerForm.value()
-  ApiError!: string;
-  userToke!: string;
-  subscrprion: Subscription = new Subscription();
-
-  ////////////////////////////////////   Control Flags
-  showPassword: boolean = false;
-  showRePassword: boolean = false;
-  isLoading: boolean = false;
-  //////////////////////////////////// Template Reference to actual inputs
-  @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('rePasswordInput') rePasswordInput!: ElementRef<HTMLInputElement>;
+  // State with Signals
+  isLoading = signal(false);
+  apiError = signal<string>('');
+  showPassword = signal(false);
+  showRePassword = signal(false);
+  // ====================================
+  // LIFECYCLE
+  // ====================================
 
   ngOnInit(): void {
-    this.initializeRegisterForm();
+    this.initializeForm();
   }
-  ///////////////////////////////////////// initiLize RegisterForm//////////////////////////////////////////////
-  initializeRegisterForm(): void {
-    this.registerForm = this.formBuilder.group(
+  // ====================================
+  // FORM INITIALIZATION
+  // ====================================
+
+  private initializeForm(): void {
+    this.registerForm = this.fb.group(
       {
-        name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-        email: [
+        name: [
           '',
           [
             Validators.required,
-            Validators.email,
-            Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+            Validators.minLength(FIELD_CONSTRAINTS.name.min),
+            Validators.maxLength(FIELD_CONSTRAINTS.name.max),
           ],
+        ],
+        email: [
+          '',
+          [Validators.required, Validators.email, Validators.pattern(VALIDATION_PATTERNS.email)],
         ],
         password: [
           '',
           [
             Validators.required,
-            Validators.minLength(6),
-            Validators.pattern(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/
-            ),
+            Validators.minLength(FIELD_CONSTRAINTS.password.min),
+            Validators.pattern(VALIDATION_PATTERNS.password),
           ],
         ],
         rePassword: ['', [Validators.required]],
-        phone: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(/^01[0125][0-9]{8}$/), // Egyptian phone pattern
-          ],
-        ],
+        phone: ['', [Validators.required, Validators.pattern(VALIDATION_PATTERNS.egyptianPhone)]],
       },
       {
         validators: this.passwordMatchValidator,
       }
     );
   }
-  ////////////////////////////////////////  Generic Passwordtoggle method/////////////////////////////////////
 
-  togglePasswordVisibility(type: 'password' | 'rePassword'): void {
-    if (type === 'password') {
-      this.showPassword = !this.showPassword;
-      const input = this.passwordInput.nativeElement as HTMLInputElement;
-      input.type = this.showPassword ? 'text' : 'password'; // if true make type text else change type to password
-    } else {
-      this.showRePassword = !this.showRePassword;
-      const input = this.rePasswordInput.nativeElement as HTMLInputElement;
-      input.type = this.showRePassword ? 'text' : 'password'; // if true make type text else change type to password
-    }
-  }
-
-  ////////////////////////////////////////// repassword Custom Validation
-  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  // ===================================
+  // CUSTOM VALIDATION
+  // ===================================
+  private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');
     const rePassword = control.get('rePassword');
 
-    if (!password || !rePassword)
-      // if it doesnot contian password and rePassword
+    if (!password || !rePassword) {
       return null;
-
+    }
     return password.value === rePassword.value ? null : { passwordMismatch: true };
   }
 
-  /////////////////////////////////////////// getter Method to get FormControls
-  get GetFormControl() {
+  // ====================================
+  // FORM CONTROLS GETTER
+  // ====================================
+
+  get formControls() {
     return this.registerForm.controls;
   }
 
-  ////////////////////////////////////////////// submit Method
-  onSubmit(): void {
-    this.isLoading = true;
+  // ====================================
+  // PASSWORD VISIBILITY TOGGLE
+  // ====================================
 
-    if (this.registerForm.valid) {
-      this.RegisterData = this.registerForm.value;
-      this.ApiError = ''; // 3l4an lw kan fy error abl keda w ana ktabt email sa7 l mafroud en l error y5tefy 3ala ma l api yrga3ly success
-      // Calling Api
-      this.subscrprion = this.authService.signup(this.RegisterData).subscribe({
-        next: (res) => {
-          this.isLoading = false;
-          if (res.message === 'success') {
-            // if account Succcessfuly Registered we will navigate user to login page
-            this.router.navigate(['/auth']);
-            this.userToke = res.token;
-            // console.log(this.userToke);
-          }
-        },
-        error: (err) => {
-          console.log(err.error.message);
-          this.ApiError = err.error.message;
-          this.isLoading = false;
-        },
-      });
-      this.registerForm.reset();
+  togglePasswordVisibility(field: 'password' | 'rePassword'): void {
+    if (field === 'password') {
+      this.showPassword.update((value) => !value);
     } else {
-      console.log('Form is inValid');
+      this.showRePassword.update((value) => !value);
+    }
+  }
+  // ====================================
+  // FORM SUBMISSION
+  // ====================================
+
+  onSubmit(): void {
+    // validate form before Submission
+    if (!this.registerForm.valid) {
       this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    // start loading State
+    this.isLoading.set(true);
+    this.apiError.set('');
+
+    const userData: SignUpUser = this.registerForm.value;
+
+    // call APi
+    this.authService
+      .signup(userData)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (response) => this.handleSuccess(response),
+        error: (error) => this.handleError(error),
+      });
+  }
+
+  // ====================================
+  // RESPONSE HANDLERS
+  // ====================================
+
+  private handleSuccess(response: any): void {
+    if (response.message === 'success') {
+      this.registerForm.reset();
+      this.router.navigate(['/auth']);
     }
   }
 
-  // Cleaning Up
-  ngOnDestroy(): void {
-    if (this.subscrprion) this.subscrprion.unsubscribe();
+  private handleError(error: any): void {
+    const errorMessage = error?.error?.message || 'Registeration failed  , please try again ';
+    this.apiError.set(errorMessage);
+    console.error('Registration error:', errorMessage);
   }
 }

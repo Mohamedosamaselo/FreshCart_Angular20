@@ -15,7 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class CustomInputComponent implements ControlValueAccessor {
-  @Input() type!: string;
+  @Input() type: string = 'text';
   @Input() formControlName!: string;
   @Input() id!: string;
   @Input() name!: string;
