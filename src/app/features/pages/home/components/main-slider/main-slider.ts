@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { CarouselModule } from "ngx-owl-carousel-o";
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
@@ -11,7 +11,6 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styleUrl: './main-slider.scss',
 })
 export class MainSlider {
-
   //owlCarsoul configurations
   customOptions: OwlOptions = {
     loop: true,
@@ -22,7 +21,7 @@ export class MainSlider {
     navSpeed: 500,
     navText: [
       '<i class="fa-solid fa-chevron-left text-xl"></i>',
-      '<i class="fa-solid fa-chevron-right text-xl"></i>'
+      '<i class="fa-solid fa-chevron-right text-xl"></i>',
     ],
     responsive: {
       0: {
@@ -31,6 +30,4 @@ export class MainSlider {
     },
     nav: true,
   };
-
-
 }

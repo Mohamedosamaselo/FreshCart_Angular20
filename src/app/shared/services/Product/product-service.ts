@@ -14,6 +14,7 @@ export class ProductService {
     return this._http.get(`${this.env}/products`);
   }
   getProductDetails(productId: string): Observable<any> {
+    // debugger;
     return this._http.get(`${this.env}/products/${productId}`);
   }
 }
