@@ -1,9 +1,12 @@
-@if (!productDetails) {
-<div class="loading-container">
+@if (!productDetails || apiError) {
+<div class="loading-container ">
     <mat-spinner></mat-spinner>
-    <p>Loading product details...</p>
+    <p>Loading product details . . . </p>
+    <p>Falid to load products . . .  </p>
+
 </div>
-} @else{
+}
+@else{
 <div class="flex justify-between items-center gap-4 my-5 ">
     <div class="w-[35%]">
         <owl-carousel-o [options]="customOptions">

@@ -18,6 +18,7 @@ export class ProductDetails implements OnInit {
   // Variables
   productDetails: Iproduct = {} as Iproduct;
   relatedProducts: Iproduct[] = [];
+  apiError!: string;
 
   // Dependency injection
   ProductService = inject(ProductService);
@@ -58,6 +59,7 @@ export class ProductDetails implements OnInit {
       },
       error: (err) => {
         console.log(err, ' erorrrrrrrrr');
+        this.apiError = err.error.message;
       },
     });
   }
