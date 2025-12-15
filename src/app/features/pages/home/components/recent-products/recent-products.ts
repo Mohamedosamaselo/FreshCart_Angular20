@@ -11,29 +11,23 @@ import { Iproduct } from '../../../../../shared/interfaces/Iproduct';
   styleUrl: './recent-products.scss',
 })
 export class RecentProducts implements OnInit {
-
   _productService = inject(ProductService);
   products!: Iproduct[];
-
 
   ngOnInit(): void {
     this.getProducts();
   }
 
-
   getProducts(): void {
-    this._productService.getAllProducts().subscribe({
+    this._productService.getProducts().subscribe({
       next: (res) => {
         console.log(res.data);
         this.products = res.data;
       },
       error: (err) => {
         console.log(err);
-
       },
-      complete: () => {
-
-      },
-    })
+      complete: () => {},
+    });
   }
 }

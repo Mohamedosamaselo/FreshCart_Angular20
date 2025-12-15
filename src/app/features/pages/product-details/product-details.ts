@@ -4,20 +4,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Iproduct } from '../../../shared/interfaces/Iproduct';
 import { CurrencyPipe, NgIf } from '@angular/common';
 import {} from '@angular/material/card';
-import { MatDivider } from '@angular/material/divider';
-import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import { ProductItem } from '../../../shared/components/Ui/product-item/product-item';
 
 @Component({
   selector: 'app-product-details',
-  imports: [CurrencyPipe, MatProgressSpinner, NgIf, CarouselModule],
+  imports: [CurrencyPipe, MatProgressSpinner, CarouselModule, ProductItem],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
 })
 export class ProductDetails implements OnInit {
   // Variables
-  productDetails: Iproduct | null = {} as Iproduct;
+  productDetails: Iproduct = {} as Iproduct;
+  relatedProducts: Iproduct[] = [];
+
   // Dependency injection
   ProductService = inject(ProductService);
   activatedRoute = inject(ActivatedRoute);
@@ -44,19 +45,34 @@ export class ProductDetails implements OnInit {
     },
     nav: true,
   };
+
   //==================================
   // Calling Api to get ProductDetails
   //=================================
-
-  getProductDetails(id: string) {
-    this.ProductService.getProductDetails(id).subscribe({
+  getDetails(id: string) {
+    this.ProductService.getProductById(id).subscribe({
       next: (Response) => {
-        // console.log(Response, 'productDetailsResponse');
         this.productDetails = Response.data;
-        console.log(this.productDetails, 'productDetailssssss object ');
+
+        if (this.productDetails != null) this.getRelatedProducts(this.productDetails.category._id);
       },
       error: (err) => {
         console.log(err, ' erorrrrrrrrr');
+      },
+    });
+  }
+
+  // ==================================
+  // get Related Products
+  // =================================
+  getRelatedProducts(CategoryId: string) {
+    this.ProductService.getProducts(CategoryId).subscribe({
+      next: (res) => {
+        console.log(res, 'related Products ');
+        this.relatedProducts = res.data;
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
   }
@@ -69,16 +85,20 @@ export class ProductDetails implements OnInit {
   //========================
   // HELPER METHODS
   //========================
-
+  // get it from pamars then get Details of product
   private getProductId() {
-    //  this.activatedRoute.paramMap.subscribe( {
-    //  next : (res : any ) => {
-    //   this.productId = res.params.id
-    //  }
-    // })
+    // way 01
+    this.activatedRoute.paramMap.subscribe({
+      next: (res: any) => {
+        console.log(res.params.id);
+        let id: any = res.params.id;
+        this.getDetails(id);
+        console.log(id, 'iddddddd');
+      },
+    });
 
-    let { id }: any = this.activatedRoute.snapshot.params;
-    // console.log(id, 'productId ');
-    this.getProductDetails(id);
+    // way 02 // but this way takethe id only one time only but i want to update and recall function of getDetails
+    // let { id }: any = this.activatedRoute.snapshot.params;
+    // this.getDetails(id);
   }
 }

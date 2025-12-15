@@ -31,4 +31,28 @@
         </button>
     </div>
 </div>
+
+<!-- related products title -->
+<h2 #related class="text-2xl font-bold my-5 text-center">
+  Related Products
+</h2>
+
+@defer (on viewport(related)) {
+  <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-4 my-7">
+    @for (product of relatedProducts; track product?._id) {
+      @if (product) {
+        <app-product-item
+        [ProductInput]="product">
+      </app-product-item>
+      }
+    }
+  </div>
 }
+@placeholder {
+  <div class="text-center my-7">
+    <p>Loading related products...</p>
+  </div>
+}
+
+}
+

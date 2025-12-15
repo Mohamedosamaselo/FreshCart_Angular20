@@ -10,11 +10,14 @@ export class ProductService {
   private _http = inject(HttpClient);
   env = enviroment.BaseUrl;
 
-  getAllProducts(): Observable<any> {
-    return this._http.get(`${this.env}/products`);
+  getProducts(categoryId?: string | null): Observable<any> {
+    let Url = categoryId
+      ? `${this.env}/products?category[in]=${categoryId}`
+      : `${this.env}/products`;
+    return this._http.get(Url);
   }
-  getProductDetails(productId: string): Observable<any> {
-    // debugger;
+
+  getProductById(productId: string): Observable<any> {
     return this._http.get(`${this.env}/products/${productId}`);
   }
 }
