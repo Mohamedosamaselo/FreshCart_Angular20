@@ -10,7 +10,7 @@ export class CartService {
   // DependencyInjection
   private http = inject(HttpClient);
   // variables
-  private token = localStorage.getItem('UserToken');
+  private token: string = JSON.stringify(localStorage.getItem('UserToken')); // change token object to string
   private baseUrl = enviroment.BaseUrl;
 
   // =========================
@@ -18,10 +18,9 @@ export class CartService {
   // =========================
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
-      token: this.token || '',
+      token: JSON.parse(this.token), // change token to object
     });
   }
-
   // =========================
   // GetLoggedUserCart
   // =========================
@@ -30,11 +29,11 @@ export class CartService {
       headers: this.getHeaders(),
     });
   }
-
   // =========================
   // AddProductToCart
   // =========================
-  public addproductToCart(productId: string | null): Observable<any> {
+  public addproductToCart(productId: string): Observable<any> {
+    // debugger;
     return this.http.post(
       `${this.baseUrl}/cart`,
       { productId },

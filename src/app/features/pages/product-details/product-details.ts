@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, output } from '@angular/core';
 import { ProductService } from '../../../shared/services/Product/product-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Iproduct } from '../../../shared/interfaces/Iproduct';
@@ -7,6 +7,7 @@ import {} from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { ProductItem } from '../../../shared/components/Ui/product-item/product-item';
+import { CartService } from '../../../shared/services/Cart/cart-service';
 
 @Component({
   selector: 'app-product-details',
@@ -19,10 +20,12 @@ export class ProductDetails implements OnInit {
   productDetails: Iproduct = {} as Iproduct;
   relatedProducts: Iproduct[] = [];
   apiError!: string;
+  isloading: boolean = false;
 
   // Dependency injection
   ProductService = inject(ProductService);
   activatedRoute = inject(ActivatedRoute);
+  CartService = inject(CartService);
 
   ngOnInit(): void {
     this.getProductId();
@@ -79,11 +82,6 @@ export class ProductDetails implements OnInit {
     });
   }
 
-  //==================================
-  // Add Product
-  //=================================
-  addProduct() {}
-
   //========================
   // HELPER METHODS
   //========================
@@ -102,5 +100,22 @@ export class ProductDetails implements OnInit {
     // way 02 // but this way takethe id only one time only but i want to update and recall function of getDetails
     // let { id }: any = this.activatedRoute.snapshot.params;
     // this.getDetails(id);
+  }
+  //========================
+  // handel AddToCart
+  //========================
+  addProductToCart(id: string) {
+    this.isloading = true;
+
+    this.CartService.addproductToCart(id).subscribe({
+      next: (res) => {
+        this.isloading = false;
+        console.log(res);
+      },
+      error: (err) => {
+        this.isloading = false;
+        console.log(err);
+      },
+    });
   }
 }

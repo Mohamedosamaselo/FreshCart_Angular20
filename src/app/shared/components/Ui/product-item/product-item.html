@@ -1,20 +1,26 @@
-<div class="product mb-4 group border  border-gray-100 p-2 rounded-xl">
-    <!-- we put this productItem inside RouterLink that navigate to productDetails as when we click on item it navigate us to productDetails  -->
-    <a [routerLink]="['/productsDetails', ProductInput._id]">
-        <img [src]="ProductInput.imageCover" class="w-full" alt="productCover">
-        <span class="text-main">{{ProductInput.category.name}}</span>
-        <h2 class="mb-4">{{ProductInput.title.split(" ").slice(0,2).join(" ")}}</h2>
-        <!-- rating Dev  -->
-        <div class="flex justify-between mb-4">
-            <p>{{ProductInput.price | currency}}</p>
-            <p>
-                <i class="fa fa-star text-rating"></i>
-                {{ProductInput.ratingsAverage}}
-            </p>
-        </div>
-    </a>
-    <!-- AddToCardButton -->
-    <button class="bg-main opacity-0 group-hover:opacity-100 transition-all duration-700 text-white rounded-md  w-[90%] block m-auto  translate-y-[100%] group-hover:translate-y-[0%]  p-3">
-        Add To Cart +
-    </button>
+<div class="product mb-4 group border border-gray-100 p-2 rounded-xl">
+  <!-- we put this productItem inside RouterLink that navigate to productDetails as when we click on item it navigate us to productDetails  -->
+  <a [routerLink]="['/productsDetails', ProductInput._id]">
+    <img [src]="ProductInput.imageCover" class="w-full" alt="productCover">
+    <span class="text-main">{{ ProductInput.category.name }}</span>
+    <h2 class="mb-4">{{ ProductInput.title.split(' ').slice(0, 2).join(' ')
+      }}</h2>
+    <!-- rating Dev  -->
+    <div class="flex justify-between mb-4">
+      <p>{{ ProductInput.price | currency }}</p>
+      <p>
+        <i class="fa fa-star text-rating"></i>
+        {{ ProductInput.ratingsAverage }}
+      </p>
+    </div>
+  </a>
+  <!-- AddToCardButton -->
+  <button (click)="handelAddToCart(ProductInput._id)"
+    class="bg-main opacity-0 group-hover:opacity-100 transition-all duration-700 text-white rounded-md w-[90%] block m-auto translate-y-[100%] group-hover:translate-y-[0%] p-3">
+    @if (isLoading) {
+    <mat-spinner diameter="20" class="mx-auto"></mat-spinner>
+    } @else {
+    Add To Cart +
+    }
+  </button>
 </div>

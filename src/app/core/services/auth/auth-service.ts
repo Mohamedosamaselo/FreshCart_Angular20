@@ -19,7 +19,7 @@ export class AuthService {
   _baseUrl = inject(Api_Base_Url); // using InjectionToken Idea
   _router = inject(Router);
 
-  _userToken: string | null = null;
+  _userToken: string | null = null; // set token with null
 
   user: BehaviorSubject<any> = new BehaviorSubject(null); // BehaviorSubject to set user state
 
@@ -90,6 +90,7 @@ export class AuthService {
   //   const data = jwtDecode(this.token); // decode token
   //   this.user.next(data); // update User
   // }
+
   isAuthenticated(): boolean {
     // SSR Safety
     if (!isPlatformBrowser(this._platformId)) {
@@ -102,7 +103,6 @@ export class AuthService {
     if (!token || !user) {
       return false;
     }
-
     return true;
   }
 }
