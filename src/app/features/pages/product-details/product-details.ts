@@ -8,6 +8,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { ProductItem } from '../../../shared/components/Ui/product-item/product-item';
 import { CartService } from '../../../shared/services/Cart/cart-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details',
@@ -26,6 +27,7 @@ export class ProductDetails implements OnInit {
   ProductService = inject(ProductService);
   activatedRoute = inject(ActivatedRoute);
   CartService = inject(CartService);
+  toastr = inject(ToastrService);
 
   ngOnInit(): void {
     this.getProductId();
@@ -110,7 +112,8 @@ export class ProductDetails implements OnInit {
     this.CartService.addproductToCart(id).subscribe({
       next: (res) => {
         this.isloading = false;
-        console.log(res);
+        this.toastr.success(res.message, 'Hello ');
+        // console.log(res);
       },
       error: (err) => {
         this.isloading = false;

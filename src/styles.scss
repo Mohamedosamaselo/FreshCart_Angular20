@@ -2,6 +2,8 @@
    Angular Material Theming - MUST BE FIRST!
    ============================================================ */
 @use '@angular/material' as mat;
+@import 'ngx-toastr/toastr';
+
 
 /* ============================================================
    Tailwind CSS Setup

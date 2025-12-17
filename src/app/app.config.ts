@@ -11,13 +11,15 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { Api_Base_Url } from './token/token';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideAnimations(),
+    provideAnimations(), // Animation provider
+    provideToastr(), // Toastr providers
     importProvidersFrom(CarouselModule),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),

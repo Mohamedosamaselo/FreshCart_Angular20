@@ -3,6 +3,7 @@ import { ProductService } from '../../../../../shared/services/Product/product-s
 import { ProductItem } from '../../../../../shared/components/Ui/product-item/product-item';
 import { Iproduct } from '../../../../../shared/interfaces/Iproduct';
 import { CartService } from './../../../../../shared/services/Cart/cart-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-recent-products',
@@ -11,10 +12,11 @@ import { CartService } from './../../../../../shared/services/Cart/cart-service'
   styleUrl: './recent-products.scss',
 })
 export class RecentProducts implements OnInit {
+  // Dependency injection
   _productService = inject(ProductService);
   _cartService = inject(CartService);
   products!: Iproduct[];
-
+  toastr = inject(ToastrService);
   ngOnInit(): void {
     this.getProducts();
   }
@@ -38,6 +40,7 @@ export class RecentProducts implements OnInit {
     this._cartService.addproductToCart(event.id).subscribe({
       next: (value) => {
         console.log(value);
+        this.toastr.success(value.message, 'Hello !');
       },
       error: (err) => {
         console.log(err);
