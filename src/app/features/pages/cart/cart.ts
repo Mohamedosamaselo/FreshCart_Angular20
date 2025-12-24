@@ -18,7 +18,7 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
 export class Cart implements OnInit {
   // variables
   cartDetails!: CartResponse;
-  dataSource = new MatTableDataSource<CartData>();
+  dataSource!: product[];
   displayedColumns: string[] = ['image', 'product', 'qty', 'price', 'action'];
   // flags
   isLoading: boolean = false;
@@ -40,7 +40,7 @@ export class Cart implements OnInit {
           this.isLoading = false;
           // this.cartDetails = res;
           this.dataSource = res.data.products;
-          // console.log(this.dataSource, 'dataSource');
+          console.log(this.dataSource, 'dataSource');
         }
       },
       error(err) {
@@ -50,15 +50,7 @@ export class Cart implements OnInit {
     });
   }
 
-  increment(item: product) {
-    item.quantity++;
-  }
 
-  decrement(item: product) {
-    if (item.quantity > 1) {
-      item.quantity--;
-    }
-  }
   removeItem(productId: string) {
     this.isLoading = true;
     this._cartService.removeSpecificCartItem(productId).subscribe({
@@ -72,10 +64,25 @@ export class Cart implements OnInit {
     })
 
   }
+  // update cart product Quanitiy
 
-  // getTotalPrice(): any {
-  //   0;
-  // }
+  updateCartCount(productId: string, count: number) {
+    this.isLoading = true;
+    let updatedCount = `${count}`; // chnge count from number to string
+    this._cartService.UpdateCartProductQuantity(productId, updatedCount).subscribe({
+      next: (response) => {
+        console.log(response, 'update');
+        this.isLoading = false;
+        this.dataSource = response.data.products;
+
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.log(err);
+
+      },
+    })
+  }
 }
 
 
