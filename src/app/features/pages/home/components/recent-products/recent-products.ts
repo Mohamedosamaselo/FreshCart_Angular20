@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ProductService } from '../../../../../shared/services/Product/product-service';
 import { ProductItem } from '../../../../../shared/components/Ui/product-item/product-item';
-import { Iproduct } from '../../../../../shared/interfaces/Iproduct';
+import { product } from '../../../../../shared/interfaces/product';
 import { CartService } from './../../../../../shared/services/Cart/cart-service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,7 +15,7 @@ export class RecentProducts implements OnInit {
   // Dependency injection
   _productService = inject(ProductService);
   _cartService = inject(CartService);
-  products!: Iproduct[];
+  products!: product[];
   toastr = inject(ToastrService);
   ngOnInit(): void {
     this.getProducts();

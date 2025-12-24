@@ -1,9 +1,9 @@
 import { Component, EventEmitter, inject, OnInit, Output, output } from '@angular/core';
 import { ProductService } from '../../../shared/services/Product/product-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Iproduct } from '../../../shared/interfaces/Iproduct';
-import { CurrencyPipe, NgIf } from '@angular/common';
-import {} from '@angular/material/card';
+import { product } from '../../../shared/interfaces/product';
+import { CurrencyPipe } from '@angular/common';
+import { } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { ProductItem } from '../../../shared/components/Ui/product-item/product-item';
@@ -18,8 +18,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ProductDetails implements OnInit {
   // Variables
-  productDetails: Iproduct = {} as Iproduct;
-  relatedProducts: Iproduct[] = [];
+  productDetails: product = {} as product;
+  relatedProducts: product[] = [];
   apiError!: string;
   isloading: boolean = false;
 

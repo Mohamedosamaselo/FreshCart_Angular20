@@ -1,0 +1,38 @@
+.cart-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+
+img {
+  width: 5rem;
+  max-height: 8.75rem;
+  object-fit: contain;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.loading,
+.empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .75 rem;
+  padding: 2.5rem 0;
+
+  mat-icon {
+    font-size: 48px;
+    color: #9e9e9e;
+  }
+}

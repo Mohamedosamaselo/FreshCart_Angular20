@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CategoryService } from '../../../../../shared/services/Category/category-service';
-import { ICategory } from '../../../../../shared/interfaces/Icategory';
+import { category } from '../../../../../shared/interfaces/category';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
@@ -12,7 +12,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 })
 export class PopularCategories implements OnInit {
   _categoryService = inject(CategoryService);
-  Categories!: ICategory[];
+  Categories!: category[];
 
   //owlCarsoul configurations
   customOptions: OwlOptions = {
@@ -24,7 +24,7 @@ export class PopularCategories implements OnInit {
     navSpeed: 500,
     navText: [
       '<i class="fa-solid fa-chevron-left text-xl"></i>',
-      '<i class="fa-solid fa-chevron-right text-xl"></i>'
+      '<i class="fa-solid fa-chevron-right text-xl"></i>',
     ],
     margin: 5,
     responsive: {
@@ -59,6 +59,4 @@ export class PopularCategories implements OnInit {
       },
     });
   }
-
-
 }

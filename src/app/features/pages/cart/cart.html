@@ -1,1 +1,86 @@
-<p>cart works!</p>
+
+<div class="cart-wrapper mat-elevation-z1">
+  @if(isLoading){
+  <!-- loading -->
+  <div class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>loading your Cart . . . .</p>
+  </div>
+  }@else if (!dataSource) {
+    <!-- 🛒 EMPTY CART -->
+    <div class="empty-cart">
+      <mat-icon>shopping_cart</mat-icon>
+      <h3>Your cart is empty</h3>
+      <p>Add products to start shopping</p>
+    </div>
+
+  }
+  @else {
+ <table mat-table [dataSource]="dataSource" class="mat-table w-[80%]">
+    <!-- image Column -->
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef
+        class="text-bold text-xl text-center"> Image </th>
+      <td mat-cell *matCellDef="let item">
+        <img [src]="item?.product?.imageCover" alt="productImage">
+      </td>
+    </ng-container>
+
+    <!-- productName Column -->
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef
+        class="text-bold text-xl text-center"> product </th>
+      <td mat-cell *matCellDef="let item"> {{item.product.title}}
+      </td>
+    </ng-container>
+
+    <!-- quantity Column -->
+    <ng-container matColumnDef="qty">
+      <th mat-header-cell *matHeaderCellDef
+        class="text-bold text-xl text-center">Quantity
+        <td mat-cell *matCellDef="let item">
+          <div class="qty-control">
+            <button mat-icon-button (click)="decrement(item)">
+              <mat-icon>remove</mat-icon>
+            </button>
+
+            <span class="qty">{{ item.product.quantity }}</span>
+
+            <button mat-icon-button (click)="increment(item)">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Price Column-->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef
+          class="text-bold text-xl text-center">Price</th>
+        <td mat-cell *matCellDef="let item">
+          {{ item.price | currency }}
+        </td>
+      </ng-container>
+
+      <!-- Action -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef
+          class="text-bold text-xl text-center">Action</th>
+        <td mat-cell *matCellDef="let item; let i = index">
+          <button mat-button color="warn" (click)="removeItem(item?.product?._id)">
+            Remove
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+        <!-- Summary -->
+    <div class="cart-summary">
+      <!-- <h3>Total: ${{ item.produ }}</h3> -->
+    </div>
+  }
+
+
+  </div>

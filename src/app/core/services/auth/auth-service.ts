@@ -30,7 +30,9 @@ export class AuthService {
     afterNextRender(() => {
       if (isPlatformBrowser(this._platformId)) {
         const savedToken = localStorage.getItem('UserToken'); // get Token
-        if (savedToken) this.setToken(savedToken); // check on user
+        if (savedToken)
+          // if there is set token
+          this.setToken(savedToken);
       }
     });
   }

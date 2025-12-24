@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, input, Output, output } from '@angular/core';
-import { Iproduct } from '../../../interfaces/Iproduct';
+import { product } from '../../../interfaces/product';
 import { CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -11,7 +11,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   styleUrl: './product-item.scss',
 })
 export class ProductItem {
-  @Input() ProductInput!: Iproduct;
+  @Input() ProductInput!: product;
   @Output() fireAddToCart: EventEmitter<{ id: string; done: () => void }> = new EventEmitter();
   isLoading: boolean = false;
 

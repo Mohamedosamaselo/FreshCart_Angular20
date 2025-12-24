@@ -10,16 +10,23 @@ export class CartService {
   // DependencyInjection
   private http = inject(HttpClient);
   // variables
-  private token: string = JSON.stringify(localStorage.getItem('UserToken')); // change token object to string
   private baseUrl = enviroment.BaseUrl;
+  // private token: string = JSON.stringify(localStorage.getItem('UserToken')); // change token object to string
 
+  // =========================
+  // GetToken method
+  // =========================
+  private getToken(): string | null {
+    return localStorage.getItem('UserToken');
+  }
   // =========================
   // GetHeaders method
   // =========================
   private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      token: JSON.parse(this.token), // change token to object
-    });
+    const token = this.getToken();  // change token to object
+    return new HttpHeaders(
+      token ? { token } : {} // only send header if exists
+    );
   }
   // =========================
   // GetLoggedUserCart
@@ -33,7 +40,6 @@ export class CartService {
   // AddProductToCart
   // =========================
   public addproductToCart(productId: string): Observable<any> {
-    // debugger;
     return this.http.post(
       `${this.baseUrl}/cart`,
       { productId },
