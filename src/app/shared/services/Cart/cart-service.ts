@@ -11,6 +11,8 @@ export class CartService {
   private http = inject(HttpClient);
   // variables
   private baseUrl = enviroment.BaseUrl;
+
+
   // private token: string = JSON.stringify(localStorage.getItem('UserToken')); // change token object to string
 
   // =========================
@@ -19,6 +21,8 @@ export class CartService {
   private getToken(): string | null {
     return localStorage.getItem('UserToken');
   }
+
+
   // =========================
   // GetHeaders method
   // =========================
@@ -28,6 +32,9 @@ export class CartService {
       token ? { token } : {} // only send header if exists
     );
   }
+
+
+
   // =========================
   // GetLoggedUserCart
   // =========================
@@ -36,6 +43,8 @@ export class CartService {
       headers: this.getHeaders(),
     });
   }
+
+
   // =========================
   // AddProductToCart
   // =========================
@@ -48,6 +57,9 @@ export class CartService {
       }
     );
   }
+
+
+
   // =========================
   // UpdateCartProductQuantity
   // =========================
@@ -58,6 +70,8 @@ export class CartService {
       { headers: this.getHeaders() }
     );
   }
+
+
   //==========================
   // RemoveSpecificCartItem
   //==========================
@@ -66,6 +80,9 @@ export class CartService {
       headers: this.getHeaders(),
     });
   }
+
+
+
   //==========================
   // ClearUserCart
   //==========================
@@ -74,4 +91,7 @@ export class CartService {
       headers: this.getHeaders(),
     });
   }
+
+
+
 }
