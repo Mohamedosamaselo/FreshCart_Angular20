@@ -1,12 +1,15 @@
 
 <div class="cart-wrapper mat-elevation-z1">
+
+  <!-- loading Screen -->
   @if(isLoading){
-  <!-- loading -->
   <div class="loading">
     <mat-spinner diameter="50"></mat-spinner>
     <p>loading your Cart . . . .</p>
   </div>
-  }@else if (dataSource.length === 0 ) {
+  }
+
+  @else if (dataSource.length === 0 ) {
     <!-- 🛒 EMPTY CART -->
     <div class="empty-cart">
       <mat-icon>shopping_cart</mat-icon>
@@ -15,6 +18,25 @@
     </div>
   }
   @else {
+     <!-- ✅ CART SUMMARY (OUTSIDE TABLE) -->
+    <div class="cart-summary flex justify-between items-center mb-4">
+      <h2 class="text-2xl">Total Cart Items: {{ cartDetails?.numOfCartItems }}</h2>
+
+      <div class="flex items-center gap-4">
+
+        <p class="text-2xl">
+          Total Cart Price:
+          {{cartDetails.data.totalCartPrice | currency }}
+        </p>
+          <!-- ClearCart Button  -->
+        <button
+          class="bg-red-600 text-white rounded-md p-2"
+          (click)="clearUserCart()">
+          Clear Cart
+        </button>
+      </div>
+    </div>
+
  <table mat-table [dataSource]="dataSource" class="mat-table w-[80%]">
     <!-- image Column -->
     <ng-container matColumnDef="image">
@@ -75,10 +97,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-        <!-- Summary -->
-    <div class="cart-summary">
-      <!-- <h3>Total: ${{ item.produ }}</h3> -->
-    </div>
   }
 
 

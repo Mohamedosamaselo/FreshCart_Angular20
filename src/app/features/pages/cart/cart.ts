@@ -20,6 +20,7 @@ export class Cart implements OnInit {
   cartDetails!: CartResponse;
   dataSource!: product[];
   displayedColumns: string[] = ['image', 'product', 'qty', 'price', 'action'];
+  updatedTotalCartPrice !: number;
   // flags
   isLoading: boolean = false;
   // Depenedency injection
@@ -29,7 +30,7 @@ export class Cart implements OnInit {
     this.getCart();
   }
   // =========================================
-  // ========================== getCart Method================
+  //  getCart Method
   // =========================================
 
   getCart(): void {
@@ -38,9 +39,12 @@ export class Cart implements OnInit {
       next: (res) => {
         if (res.status == 'success') {
           this.isLoading = false;
-          // this.cartDetails = res;
+          this.cartDetails = res;
+          // console.log(this.cartDetails, "cartDetials ");
           this.dataSource = res.data.products;
-          console.log(this.dataSource, 'dataSource');
+          // console.log(this.dataSource, 'dataSource');
+          // this.updatedTotalCartPrice = this.cartDetails.data.totalCartPrice;
+
         }
       },
       error(err) {
@@ -51,12 +55,16 @@ export class Cart implements OnInit {
   }
 
 
+  // =========================================
+  //  removeItem Method
+  // =========================================
   removeItem(productId: string) {
     this.isLoading = true;
     this._cartService.removeSpecificCartItem(productId).subscribe({
       next: (res) => {
         this.isLoading = false; // update loading status
-        this.dataSource = res.data.products; // render Cart after update
+        this.dataSource = res.data.products; // update the dataSource
+        this.cartDetails = res;  // update the cartDetails
       },
       error: (err) => {
         console.log(err);
@@ -64,17 +72,20 @@ export class Cart implements OnInit {
     })
 
   }
-  // update cart product Quanitiy
 
-  updateCartCount(productId: string, count: number) {
+
+  // ===========================================
+  // updateCartProductQuanitiy Method
+  // ===========================================
+  updateCartCount(productId: string, count: number): void {
     this.isLoading = true;
     let updatedCount = `${count}`; // chnge count from number to string
     this._cartService.UpdateCartProductQuantity(productId, updatedCount).subscribe({
       next: (response) => {
-        console.log(response, 'update');
+        // console.log(response, 'update');
         this.isLoading = false;
         this.dataSource = response.data.products;
-
+        this.cartDetails = response;
       },
       error: (err) => {
         this.isLoading = false;
@@ -83,6 +94,26 @@ export class Cart implements OnInit {
       },
     })
   }
+
+  // ===========================================
+  // clearUserCart Method
+  // ===========================================
+  public clearUserCart(): void {
+    this.isLoading = true;
+    this._cartService.clearUserCart().subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        // console.log(res, 'clear ');
+        if (res.message == 'success')
+          this.dataSource = [];
+      },
+      error: (err) => {
+        console.log(err);
+      },
+
+    })
+  }
+
 }
 
 
