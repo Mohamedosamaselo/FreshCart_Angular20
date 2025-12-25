@@ -9,7 +9,7 @@
   </div>
   }
 
-  @else if (dataSource.length === 0 ) {
+  @else if (!isLoading && dataSource.data.length === 0 ) {
     <!-- 🛒 EMPTY CART -->
     <div class="empty-cart">
       <mat-icon>shopping_cart</mat-icon>
@@ -17,6 +17,7 @@
       <p>Add products to start shopping</p>
     </div>
   }
+
   @else {
      <!-- ✅ CART SUMMARY (OUTSIDE TABLE) -->
     <div class="cart-summary flex justify-between items-center mb-4">
@@ -26,7 +27,7 @@
 
         <p class="text-2xl">
           Total Cart Price:
-          {{cartDetails.data.totalCartPrice | currency }}
+          {{cartDetails?.data?.totalCartPrice | currency }}
         </p>
           <!-- ClearCart Button  -->
         <button

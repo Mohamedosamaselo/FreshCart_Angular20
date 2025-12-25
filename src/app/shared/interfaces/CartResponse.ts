@@ -1,6 +1,7 @@
-import { brand } from "./brand"
-import { category } from "./category"
-import { subcategory } from "./subcategory"
+import { product } from './product';
+
+
+
 
 export interface CartResponse {
   status: string
@@ -12,24 +13,12 @@ export interface CartResponse {
 export interface CartData {
   _id: string
   cartOwner: string
-  products: Product[]
+  products: product[]
   createdAt: string
   updatedAt: string
   totalCartPrice: number
 }
 
-export interface Product {
-  count: number
-  _id: string
-  price: number
-  subcategory: subcategory[]
-  title: string
-  quantity: number
-  imageCover: string
-  category: category
-  brand: brand
-  ratingsAverage: number
-  id: string
-}
+
 
 
