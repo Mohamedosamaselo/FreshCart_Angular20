@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, NgPlural } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { CartService } from '../../../shared/services/Cart/cart-service';
 import { CartResponse } from '../../../shared/interfaces/CartResponse';
@@ -9,9 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 import { product } from '../../../shared/interfaces/product';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
+  standalone: true,
   imports: [
     CommonModule,
     MatTableModule,
@@ -20,6 +22,8 @@ import { finalize } from 'rxjs';
     MatInputModule,
     MatProgressSpinner,
     CurrencyPipe,
+    RouterLink,
+    NgPlural
   ],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
@@ -38,6 +42,7 @@ export class Cart implements OnInit {
   ngOnInit(): void {
     this.getCart();
   }
+
   // =========================================
   //  getCart Method
   // =========================================
@@ -100,6 +105,13 @@ export class Cart implements OnInit {
         error: this.handleError
       });
   }
+
+  // ===========================================
+  //              navigate to checkoutComponent
+  // ===========================================
+  //  goToCheckout(): void {
+  //   this._router.
+  // }
 
   // ===========================================
   //              Helper Methods
