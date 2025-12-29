@@ -11,6 +11,9 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 import { RouterLink } from '@angular/router';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+@UntilDestroy()
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -29,106 +32,101 @@ import { RouterLink } from '@angular/router';
   styleUrl: './cart.scss',
 })
 export class Cart implements OnInit {
-  // variables
+
   cartDetails?: CartResponse;
+  dataSource = new MatTableDataSource<product>();
+  isLoading = false;
 
-  dataSource = new MatTableDataSource<product>();//
-
-  isLoading: boolean = false;
   readonly displayedColumns: string[] = ['image', 'product', 'qty', 'price', 'action'];
-  // Depenedency injection
-  private readonly _cartService = inject(CartService);
+
+  private readonly cartService = inject(CartService);
 
   ngOnInit(): void {
     this.getCart();
   }
 
   // =========================================
-  //  getCart Method
+  //              getCart
   // =========================================
-
   getCart(): void {
     this.isLoading = true;
-    this._cartService
-      .getLoggedUserCart()
-      .pipe(finalize(() => (this.isLoading = false)))
+
+    this.cartService.getLoggedUserCart()
+      .pipe(
+        untilDestroyed(this),
+        finalize(() => (this.isLoading = false))
+      )
       .subscribe({
-        next: (res) => {
-          this.updateCartState(res);
-        },
+        next: res => this.updateCartState(res),
         error: this.handleError,
       });
   }
 
   // =========================================
-  //             removeItem Method
+  //              removeItem
   // =========================================
-  removeItem(productId: string) {
+  removeItem(productId: string): void {
     this.isLoading = true;
-    this._cartService.removeSpecificCartItem(productId)
-      .pipe(finalize(() => (this.isLoading = false)))
+
+    this.cartService.removeSpecificCartItem(productId)
+      .pipe(
+        untilDestroyed(this),
+        finalize(() => (this.isLoading = false))
+      )
       .subscribe({
-        next: (res) => {
-          this.updateCartState(res);
-        },
+        next: res => this.updateCartState(res),
         error: this.handleError
       });
   }
 
-  // ===========================================
-  //         updateCartProductQuanitiy Method
-  // ===========================================
+  // =========================================
+  //         updateCartCount
+  // =========================================
   updateCartCount(productId: string, count: number): void {
-
     this.isLoading = true;
 
-    this._cartService.UpdateCartProductQuantity(productId, String(count))
-      .pipe(finalize(() => (this.isLoading = false)))
+    this.cartService.UpdateCartProductQuantity(productId, String(count))
+      .pipe(
+        untilDestroyed(this),
+        finalize(() => (this.isLoading = false))
+      )
       .subscribe({
-        next: (res) => this.updateCartState(res),
+        next: res => this.updateCartState(res),
         error: this.handleError
       });
   }
 
-  // ===========================================
-  //              clearUserCart Method
-  // ===========================================
-  public clearUserCart(): void {
+  // =========================================
+  //              clearUserCart
+  // =========================================
+  clearUserCart(): void {
     this.isLoading = true;
-    this._cartService.clearUserCart()
-      .pipe(finalize(() => this.isLoading = false))
-      .subscribe({
-        next: (res) =>
-          // if (res.message == 'success') this.dataSource = [];
-          this.clearCartState(),
 
+    this.cartService.clearUserCart()
+      .pipe(
+        untilDestroyed(this),
+        finalize(() => (this.isLoading = false))
+      )
+      .subscribe({
+        next: () => this.clearCartState(),
         error: this.handleError
       });
   }
 
-  // ===========================================
-  //              navigate to checkoutComponent
-  // ===========================================
-
-
-
-
-
-
-
-  // ===========================================
-  //              Helper Methods
-  // ===========================================
+  // =========================================
+  //              Helpers
+  // =========================================
   private updateCartState(res: CartResponse): void {
     this.cartDetails = res;
     this.dataSource.data = res.data.products;
   }
+
   private clearCartState(): void {
     this.cartDetails = undefined;
     this.dataSource.data = [];
   }
+
   private handleError(error: unknown): void {
     console.error('Cart error:', error);
   }
-
 }

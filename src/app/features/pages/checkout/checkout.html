@@ -1,5 +1,15 @@
-<form [formGroup]="checkoutForm"
+<form [formGroup]="checkoutForm" (ngSubmit)="submit()"
   class="checkout-form  border-0  shadow-lg">
+
+  <!-- loading Screen -->
+  @if(isLoading){
+  <div class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>loading . . . .</p>
+  </div>
+  }
+
+  @else {
 
   <div class="text-center font-medium">
     <h2>Checkout Order </h2>
@@ -51,12 +61,21 @@
   </mat-form-field>
 
   <!-- Submit -->
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    [disabled]="checkoutForm.invalid">
-    Confirm Order
-  </button>
-
+  <div class="flex gap-2 items-center content-center">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="checkoutForm.invalid">
+      online Payment
+    </button>
+    <!-- <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="checkoutForm.invalid">
+      cash Payment
+    </button> -->
+  </div>
+  }
 </form>

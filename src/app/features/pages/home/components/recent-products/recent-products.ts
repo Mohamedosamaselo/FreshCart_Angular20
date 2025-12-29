@@ -4,7 +4,10 @@ import { ProductItem } from '../../../../../shared/components/Ui/product-item/pr
 import { product } from '../../../../../shared/interfaces/product';
 import { CartService } from './../../../../../shared/services/Cart/cart-service';
 import { ToastrService } from 'ngx-toastr';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { finalize } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-recent-products',
   imports: [ProductItem],
@@ -17,37 +20,44 @@ export class RecentProducts implements OnInit {
   _cartService = inject(CartService);
   products!: product[];
   toastr = inject(ToastrService);
+
   ngOnInit(): void {
     this.getProducts();
   }
 
   getProducts(): void {
-    this._productService.getProducts().subscribe({
-      next: (res) => {
-        console.log(res.data);
-        this.products = res.data;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {},
-    });
+    this._productService
+      .getProducts()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res) => {
+          console.log(res.data);
+          this.products = res.data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => { },
+      });
   }
+
   //============================
   // Calling api here
   //============================
   addtoCart(event: { id: string; done: () => void }): void {
-    this._cartService.addproductToCart(event.id).subscribe({
-      next: (value) => {
-        console.log(value);
-        this.toastr.success(value.message, 'Hello !');
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        event.done(); // stop spinner in child
-      },
-    });
+    this._cartService
+      .addproductToCart(event.id)
+      .pipe(
+        untilDestroyed(this),
+        finalize(() => event.done())
+      )
+      .subscribe({
+        next: (value) => {
+          this.toastr.success(value.message, 'Hello !');
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 }

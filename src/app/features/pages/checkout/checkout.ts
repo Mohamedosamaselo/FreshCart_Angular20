@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
   ɵInternalFormsSharedModule,
@@ -12,6 +11,9 @@ import { MatFormField, MatLabel, MatError, MatFormFieldModule } from "@angular/m
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatAnchor, MatButtonModule } from "@angular/material/button";
+import { Order } from '../../../shared/services/Order/order';
+import { finalize, Observable } from 'rxjs';
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-checkout',
@@ -25,7 +27,8 @@ import { MatAnchor, MatButtonModule } from "@angular/material/button";
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatAnchor
+    MatAnchor,
+    MatProgressSpinner
   ]
   ,
   templateUrl: './checkout.html',
@@ -35,8 +38,11 @@ export class Checkout implements OnInit {
   // DI
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly FB = inject(FormBuilder);
+  private readonly orderService = inject(Order);
   // variables
   checkoutForm!: FormGroup;
+  cartId !: string;
+  isLoading: boolean = false
 
   ngOnInit(): void {
     this.initializeForm();
@@ -44,10 +50,12 @@ export class Checkout implements OnInit {
   }
 
   getcartId() {
-    let { cartId } = this._activatedRoute.snapshot.params;
+    this.cartId = this._activatedRoute.snapshot.params['cartId'];
   }
 
   initializeForm(): void {
+    this.isLoading = true;
+
     this.checkoutForm = this.FB.group({
       address: ['', Validators.required],
       city: ['', Validators.required],
@@ -57,7 +65,59 @@ export class Checkout implements OnInit {
       ]
       ]
     })
+    this.isLoading = false;
   }
+
+
+  // cash Payment
+  cashOrder(cartId: string, shippingAddress: object): void {
+    this.isLoading = true;
+    this.orderService.cashOrder(cartId, shippingAddress)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          // this.isLoading = false;
+        },
+        error: (err) => {
+          console.log(err);
+          // this.isLoading = false;
+        },
+      })
+  }
+
+  // online Payment
+  onlineOrder(cartId: string, shippingAddress: object): void {
+    this.isLoading = true;
+
+    this.orderService.onlinePayment(cartId, shippingAddress)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (res) => {
+          if (res.status === 'success') {
+            window.open(res.session.url)
+          }
+          // console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      })
+  }
+
+
+  submit() {
+    if (this.checkoutForm.invalid) {
+      this.checkoutForm.markAllAsTouched();
+      return;
+    }
+    else {
+      // this.cashOrder(this.cartId, this.checkoutForm.value)
+      this.onlineOrder(this.cartId, this.checkoutForm.value)
+    }
+
+  }
+
 
 
 

@@ -20,4 +20,5 @@ export class ProductService {
   getProductById(productId: string): Observable<any> {
     return this._http.get(`${this.env}/products/${productId}`);
   }
+  
 }

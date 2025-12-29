@@ -64,6 +64,17 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/pages/checkout/checkout').then((c) => c.Checkout),
   },
+  {
+    path: 'allorders',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/pages/allorders/allorders').then((c) => c.Allorders),
+  },
+
+
+
+
+
 
   {
     path: '**',
