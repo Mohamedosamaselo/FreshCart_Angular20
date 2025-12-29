@@ -53,7 +53,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/pages/product-details/product-details').then((c) => c.ProductDetails),
   },
-
   {
     path: 'cart',
     canActivate: [authGuard],

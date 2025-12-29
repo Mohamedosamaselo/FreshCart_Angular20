@@ -72,5 +72,4 @@ export class Order {
         headers: this.getHeaders()
       })
   }
-
 }

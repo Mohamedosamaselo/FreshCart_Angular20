@@ -109,9 +109,12 @@ export class Cart implements OnInit {
   // ===========================================
   //              navigate to checkoutComponent
   // ===========================================
-  //  goToCheckout(): void {
-  //   this._router.
-  // }
+
+
+
+
+
+
 
   // ===========================================
   //              Helper Methods

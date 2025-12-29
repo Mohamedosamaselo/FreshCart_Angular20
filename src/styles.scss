@@ -40,3 +40,15 @@ body {
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 }
+
+//=== CashOrder form
+/* Remove the notch & inner line */
+.mdc-notched-outline__notch {
+  border-right: none !important;
+  border-left: none !important;
+}
+
+// removing * of inputLAbel
+.mat-mdc-form-field-required-marker {
+  display: none;
+}

@@ -1,1 +1,62 @@
-<p>checkout works!</p>
+<form [formGroup]="checkoutForm"
+  class="checkout-form  border-0  shadow-lg">
+
+  <div class="text-center font-medium">
+    <h2>Checkout Order </h2>
+  </div>
+
+  <!-- Address -->
+  <mat-form-field appearance="outline" class="w-[80%] ">
+    <mat-label> Address</mat-label>
+    <input matInput formControlName="address">
+
+    <!-- handling Error -->
+    @if (checkoutForm.get('address')?.hasError('required')) {
+    <mat-error>
+      Address is required
+    </mat-error>
+    }
+  </mat-form-field>
+
+  <!-- City -->
+  <mat-form-field appearance="outline" class="w-[80%] ">
+    <mat-label> City</mat-label>
+    <input matInput formControlName="city">
+
+    <!-- handling Error -->
+    @if (checkoutForm.get('city')?.hasError('required')) {
+    <mat-error>
+      City is required
+    </mat-error>
+    }
+
+  </mat-form-field>
+
+  <!-- Phone -->
+  <mat-form-field appearance="outline" class="w-[80%] hideRequiredMarker">
+    <mat-label> Phone</mat-label>
+    <input matInput formControlName="phone">
+
+    <!-- handling Error -->
+    @if (checkoutForm.get('phone')?.hasError('required')) {
+    <mat-error>
+      Address is required
+    </mat-error>
+    } @else if (checkoutForm.get('phone')?.hasError('pattern')) {
+    <mat-error>
+      Phone must be 11 digits
+    </mat-error>
+    }
+
+  </mat-form-field>
+
+  <!-- Submit -->
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="checkoutForm.invalid">
+    Confirm Order
+  </button>
+
+</form>
