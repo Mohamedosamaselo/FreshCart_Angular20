@@ -56,7 +56,7 @@ export class Order {
   // getUserOrders  method
   // =========================
   getUserOrder(userId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/orders/${userId}`)
+    return this.http.get(`${this.baseUrl}/orders/user/${userId}`)
   }
 
   // =========================

@@ -26,7 +26,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
     MatProgressSpinner,
     CurrencyPipe,
     RouterLink,
-    NgPlural
+
   ],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',

@@ -14,12 +14,16 @@ import { CustomJwtPayload } from '../../interfaces/CustomJwtPayload';
   providedIn: 'root',
 })
 export class AuthService {
+
   _http = inject(HttpClient);
+
   _platformId = inject(PLATFORM_ID);
-  _baseUrl = inject(Api_Base_Url); // using InjectionToken Idea
+
+  _baseUrl = inject(Api_Base_Url);         // using InjectionToken Idea
+
   _router = inject(Router);
 
-  _userToken: string | null = null; // set token with null
+  _userToken: string | null = null;       // set token with null
 
   user: BehaviorSubject<any> = new BehaviorSubject(null); // BehaviorSubject to set user state
 
@@ -61,7 +65,7 @@ export class AuthService {
 
       try {
         const data: CustomJwtPayload = jwtDecode(this._userToken); // Decode Token
-        this.user.next(data); // update User of type behaviour Subject  With UpdatedTokenData
+        this.user.next(data);       // update User of type behaviour Subject  With UpdatedTokenData
       } catch (error) {
         console.log('invalid Token !', error);
         this.user.next(null); // update User With UpdatedTokenData
