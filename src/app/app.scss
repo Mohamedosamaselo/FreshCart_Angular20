@@ -1,0 +1,8 @@
+//:host represents the root element of an Angular component.
+// to making the footer in the buttom
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
+}
