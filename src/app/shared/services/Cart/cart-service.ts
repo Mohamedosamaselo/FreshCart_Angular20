@@ -33,41 +33,62 @@ export class CartService {
     );
   }
 
-
-
   // =========================
   // GetLoggedUserCart
   // =========================
+  // public getLoggedUserCart(): Observable<any> {
+  //   return this.http.get(`${this.baseUrl}/cart`, {
+  //     headers: this.getHeaders(),
+  //   });
+  // }
+
+  /// here i will set headers with token by using TokenInterceptor
   public getLoggedUserCart(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/cart`, {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(`${this.baseUrl}/cart`);
   }
+
+
 
 
   // =========================
   // AddProductToCart
   // =========================
+  // public addproductToCart(productId: string): Observable<any> {
+  //   return this.http.post(
+  //     `${this.baseUrl}/cart`,
+  //     { productId },
+  //     {
+  //       headers: this.getHeaders(),
+  //     }
+  //   );
+  // }
+
+  /// here i will set headers with token by using TokenInterceptor
   public addproductToCart(productId: string): Observable<any> {
     return this.http.post(
       `${this.baseUrl}/cart`,
       { productId },
-      {
-        headers: this.getHeaders(),
-      }
+
     );
   }
-
-
 
   // =========================
   // UpdateCartProductQuantity
   // =========================
+  // public UpdateCartProductQuantity(productId: string, count: string): Observable<any> {
+  //   return this.http.put(
+  //     `${this.baseUrl}/cart/${productId}`,
+  //     { count },
+  //     { headers: this.getHeaders() }
+  //   );
+  // }
+
+  /// here i will set headers with token by using TokenInterceptor
   public UpdateCartProductQuantity(productId: string, count: string): Observable<any> {
     return this.http.put(
       `${this.baseUrl}/cart/${productId}`,
       { count },
-      { headers: this.getHeaders() }
+
     );
   }
 
@@ -75,10 +96,15 @@ export class CartService {
   //==========================
   // RemoveSpecificCartItem
   //==========================
+  // public removeSpecificCartItem(productId: string): Observable<any> {
+  //   return this.http.delete(`${this.baseUrl}/cart/${productId}`, {
+  //     headers: this.getHeaders(),
+  //   });
+  // }
+
+  /// here i will set headers with token by using TokenInterceptor
   public removeSpecificCartItem(productId: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/cart/${productId}`, {
-      headers: this.getHeaders(),
-    });
+    return this.http.delete(`${this.baseUrl}/cart/${productId}`);
   }
 
 
@@ -86,10 +112,15 @@ export class CartService {
   //==========================
   // ClearUserCart
   //==========================
+  // public clearUserCart(): Observable<any> {
+  //   return this.http.delete(`${this.baseUrl}/cart`, {
+  //     headers: this.getHeaders(),
+  //   });
+  // }
+
+  /// here i will set headers with token by using TokenInterceptor
   public clearUserCart(): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/cart`, {
-      headers: this.getHeaders(),
-    });
+    return this.http.delete(`${this.baseUrl}/cart`);
   }
 
 

@@ -88,6 +88,7 @@ export class Checkout implements OnInit {
 
   // online Payment
   onlineOrder(cartId: string, shippingAddress: object): void {
+
     this.isLoading = true;
 
     this.orderService.onlinePayment(cartId, shippingAddress)
@@ -97,7 +98,6 @@ export class Checkout implements OnInit {
           if (res.status === 'success') {
             window.open(res.session.url)
           }
-          // console.log(res);
         },
         error: (err) => {
           console.log(err);

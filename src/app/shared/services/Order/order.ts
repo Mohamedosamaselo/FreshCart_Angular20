@@ -62,11 +62,20 @@ export class Order {
   // =========================
   // onlinePayment  method
   // =========================
+  // onlinePayment(cartId: string, ShippingAddress: object): Observable<any> {
+  //   return this.http.post(`${this.baseUrl}/orders/checkout-session/${cartId}?url=http://localhost:4200`,
+  //     { ShippingAddress },
+  //     {
+  //       headers: this.getHeaders()
+  //     })
+  // }
+
+  /// here i will set headers with token by using TokenInterceptor
   onlinePayment(cartId: string, ShippingAddress: object): Observable<any> {
     return this.http.post(`${this.baseUrl}/orders/checkout-session/${cartId}?url=http://localhost:4200`,
       { ShippingAddress },
-      {
-        headers: this.getHeaders()
-      })
+    )
   }
+
+
 }

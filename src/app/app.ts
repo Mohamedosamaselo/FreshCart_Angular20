@@ -19,4 +19,6 @@ export class App implements OnInit {
   ngOnInit() {
     this.flowbiteInit.initFlowbite();
   }
+
+
 }

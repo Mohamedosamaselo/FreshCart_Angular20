@@ -1,5 +1,15 @@
+<!-- Search input -->
+<div class="flex justify-center my-10">
+  <input
+    type="search"
+    [(ngModel)]="searchText"
+    class="text-4xl border border-green-400 w-1/2 px-4 py-2"
+    placeholder="Search products..." />
+</div>
+
 <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-4 my-7">
-  @for (product of products; track $index) {
+  <!-- Displaying products -->
+  @for (product of products | filter :searchText; track $index) {
   <app-product-item
     [ProductInput]="product"
     (fireAddToCart)="addtoCart($event)">

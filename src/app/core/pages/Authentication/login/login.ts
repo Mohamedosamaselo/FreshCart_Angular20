@@ -2,7 +2,7 @@ import { isPlatformBrowser, NgClass } from '@angular/common';
 import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { finalize, delay } from 'rxjs';
+import { finalize, delay, Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth-service';
 import { LoginUser } from '../../../interfaces/LoginUser';
 import { ErrorMessage } from '../../../../shared/components/Ui/error-message/error-message';
@@ -29,7 +29,11 @@ const Navigation_Delay = 500; // 2 seconds
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, NgClass, CustomInputComponent, ErrorMessage],
+  imports: [ReactiveFormsModule,
+    NgClass,
+    CustomInputComponent,
+    ErrorMessage
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -41,6 +45,8 @@ export class Login implements OnInit {
   platformId = inject(PLATFORM_ID);
   // Form
   loginForm!: FormGroup;
+  // variables
+  private subscription: Subscription = new Subscription();
   // State with Signals
   isLoading = signal(false);
   apiError = signal<string>('');
@@ -90,6 +96,7 @@ export class Login implements OnInit {
     this.showPassword.update((value) => !value);
   }
 
+
   // ====================================
   // FORM SUBMISSION
   // ====================================
@@ -107,10 +114,14 @@ export class Login implements OnInit {
 
     const credentials: LoginUser = this.loginForm.value;
 
+    this.subscription.unsubscribe();  // unsubscribe the request then i will subscribe to it
+
     // Call API
-    this.authService
+    this.subscription = this.authService
       .login(credentials)
-      .pipe(finalize(() => this.isLoading.set(false)))
+      .pipe(
+        finalize(() => this.isLoading.set(false))
+      )
       .subscribe({
         next: (response) => this.handleSuccess(response),
         error: (error) => this.handleError(error),
