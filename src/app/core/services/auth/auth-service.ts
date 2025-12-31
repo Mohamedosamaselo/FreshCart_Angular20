@@ -40,7 +40,6 @@ export class AuthService {
       }
     });
   }
-
   // ----------------------------
   // LOGIN METHOD
   // ----------------------------
@@ -74,14 +73,14 @@ export class AuthService {
   }
 
   // ----------------------------
-  // GETtOKEN METHOD
+  // GetToken METHOD
   // ----------------------------
   getToken(): string | null {
     return this._userToken;
   }
 
   // ----------------------------
-  // LOGOUTor signOut
+  // signOut Method
   // ----------------------------
   logout(): void {
     this._userToken = null; // set Token with null
@@ -98,7 +97,7 @@ export class AuthService {
   // }
 
   isAuthenticated(): boolean {
-    // SSR Safety
+    // SSR Safety check
     if (!isPlatformBrowser(this._platformId)) {
       return false;
     }
@@ -109,6 +108,9 @@ export class AuthService {
     if (!token || !user) {
       return false;
     }
+
     return true;
   }
+
+
 }
