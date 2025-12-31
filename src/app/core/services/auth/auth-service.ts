@@ -54,9 +54,9 @@ export class AuthService {
     return this._http.post<any>(`${this._baseUrl}/auth/signup`, Credentials);
   }
 
-  // ----------------------------
+  // ================================
   // SAVE TOKEN + UPDATE USER
-  // ----------------------------
+  // =================================
   // Set Token in Memory and optionally update User BehaviorSubject
   setToken(Token: string) {
     if (Token !== null) {
@@ -72,9 +72,11 @@ export class AuthService {
     }
   }
 
-  // ----------------------------
+
+
+  // ===============================
   // GetToken METHOD
-  // ----------------------------
+  // ================================
   getToken(): string | null {
     return this._userToken;
   }
@@ -95,6 +97,9 @@ export class AuthService {
   //   const data = jwtDecode(this.token); // decode token
   //   this.user.next(data); // update User
   // }
+
+
+
 
   isAuthenticated(): boolean {
     // SSR Safety check

@@ -119,14 +119,14 @@ export class Login implements OnInit {
     // Call API
     this.subscription = this.authService
       .login(credentials)
-      .pipe(
-        finalize(() => this.isLoading.set(false))
-      )
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (response) => this.handleSuccess(response),
         error: (error) => this.handleError(error),
       });
   }
+
+
 
   // ====================================
   // RESPONSE HANDLERS

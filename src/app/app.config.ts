@@ -13,6 +13,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { Api_Base_Url } from './token/token';
 import { provideToastr } from 'ngx-toastr';
 import { tokenInterceptor } from './core/interceptors/token-interceptor';
+import { errorInterceptor } from './core/interceptors/error-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideToastr(), // Toastr providers
     importProvidersFrom(CarouselModule),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch(), withInterceptors([tokenInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([tokenInterceptor, errorInterceptor])),
 
     {
       provide: Api_Base_Url,
