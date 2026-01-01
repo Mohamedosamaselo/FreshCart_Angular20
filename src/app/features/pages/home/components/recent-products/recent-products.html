@@ -9,7 +9,7 @@
 
 <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-4 my-7">
   <!-- Displaying products -->
-  @for (product of products | filter :searchText; track $index) {
+  @for (product of products | filter : searchText; track product.id) {
   <app-product-item
     [ProductInput]="product"
     (fireAddToCart)="addtoCart($event)">

@@ -6,13 +6,13 @@ import { CartService } from './../../../../../shared/services/Cart/cart-service'
 import { ToastrService } from 'ngx-toastr';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { finalize } from 'rxjs';
-import { FormsModule, ɵInternalFormsSharedModule } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { FilterPipe } from "../../../../../shared/Pipes/filter-pipe";
 
 @UntilDestroy()
 @Component({
   selector: 'app-recent-products',
-  imports: [ProductItem, ɵInternalFormsSharedModule, FormsModule, FilterPipe],
+  imports: [ProductItem, FormsModule, FilterPipe],
   templateUrl: './recent-products.html',
   styleUrl: './recent-products.scss',
 })
@@ -20,7 +20,7 @@ export class RecentProducts implements OnInit {
   // Dependency injection
   _productService = inject(ProductService);
   _cartService = inject(CartService);
-  products!: product[];
+  products: product[] = [];
   toastr = inject(ToastrService);
   searchText: string = "";
 
