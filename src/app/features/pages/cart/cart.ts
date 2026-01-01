@@ -10,8 +10,8 @@ import { product } from '../../../shared/interfaces/product';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 import { RouterLink } from '@angular/router';
-
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { NgxSpinnerComponent } from 'ngx-spinner';
 
 @UntilDestroy()
 @Component({
@@ -26,7 +26,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
     MatProgressSpinner,
     CurrencyPipe,
     RouterLink,
-
+    NgxSpinnerComponent
   ],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
@@ -41,8 +41,10 @@ export class Cart implements OnInit {
 
   private readonly cartService = inject(CartService);
 
+
   ngOnInit(): void {
     this.getCart();
+
   }
 
   // =========================================

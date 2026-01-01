@@ -14,6 +14,7 @@ import { MatAnchor, MatButtonModule } from "@angular/material/button";
 import { Order } from '../../../shared/services/Order/order';
 import { finalize, Observable } from 'rxjs';
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { NgxSpinnerComponent, NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-checkout',
@@ -28,7 +29,8 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
     MatIconModule,
     MatButtonModule,
     MatAnchor,
-    MatProgressSpinner
+    MatProgressSpinner,
+    NgxSpinnerComponent
   ]
   ,
   templateUrl: './checkout.html',
@@ -39,6 +41,8 @@ export class Checkout implements OnInit {
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly FB = inject(FormBuilder);
   private readonly orderService = inject(Order);
+  private readonly spinner = inject(NgxSpinnerService);
+
   // variables
   checkoutForm!: FormGroup;
   cartId !: string;
@@ -47,6 +51,12 @@ export class Checkout implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.getcartId();
+    // loading spinner NgxSpinner Package
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 2000)
+
   }
 
   getcartId() {

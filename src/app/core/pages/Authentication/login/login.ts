@@ -7,6 +7,7 @@ import { AuthService } from '../../../services/auth/auth-service';
 import { LoginUser } from '../../../interfaces/LoginUser';
 import { ErrorMessage } from '../../../../shared/components/Ui/error-message/error-message';
 import { CustomInputComponent } from '../../../../shared/components/Ui/custom-input-component/custom-input-component';
+import { NgxSpinnerComponent, NgxSpinnerService } from "ngx-spinner";
 
 // ====================================
 // CONSTANTS
@@ -32,7 +33,8 @@ const Navigation_Delay = 500; // 2 seconds
   imports: [ReactiveFormsModule,
     NgClass,
     CustomInputComponent,
-    ErrorMessage
+    ErrorMessage,
+    NgxSpinnerComponent
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
@@ -42,9 +44,12 @@ export class Login implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  platformId = inject(PLATFORM_ID);
+  private readonly platformId = inject(PLATFORM_ID);
+  private spinner = inject(NgxSpinnerService);
+
   // Form
   loginForm!: FormGroup;
+
   // variables
   private subscription: Subscription = new Subscription();
   // State with Signals
@@ -58,6 +63,14 @@ export class Login implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+
+    /** spinner starts on init */
+    this.spinner.show();
+
+    setTimeout(() => {
+      /** spinner ends after 5 seconds */
+      this.spinner.hide();
+    }, 2000);
   }
 
   // ====================================
