@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ProductService } from '../../../../../shared/services/Product/product-service';
 import { ProductItem } from '../../../../../shared/components/Ui/product-item/product-item';
 import { product } from '../../../../../shared/interfaces/product';
@@ -20,14 +20,34 @@ export class RecentProducts implements OnInit {
   // Dependency injection
   _productService = inject(ProductService);
   _cartService = inject(CartService);
-  products: product[] = [];
   toastr = inject(ToastrService);
-  searchText: string = "";
+  // products: product[] = [];
+  products = signal<product[]>([]);
+  // searchText: string = "";
+  searchText = signal('');
+
+
+
+
 
 
   ngOnInit(): void {
     this.getProducts();
   }
+
+  // Compute Filtered List
+  filteredProducts = computed(() => {
+    const text = this.searchText().toLowerCase().trim();
+
+    const items = this.products();
+
+    if (!items)
+      return items;
+
+    return items.filter(item => item.title?.toLowerCase().includes(text))
+  })
+
+
 
   getProducts(): void {
     this._productService
@@ -36,7 +56,7 @@ export class RecentProducts implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res.data);
-          this.products = res.data;
+          this.products.set(res.data);
         },
         error: (err) => {
           console.log(err);

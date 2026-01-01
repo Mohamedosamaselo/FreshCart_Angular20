@@ -1,15 +1,24 @@
 <!-- Search input -->
 <div class="flex justify-center my-10">
-  <input
+  <!-- input Search Using filterPipe way  -->
+  <!-- <input
     type="search"
     [(ngModel)]="searchText"
     class="text-4xl border border-green-400 w-1/2 px-4 py-2"
-    placeholder="Search products..." />
+    placeholder="Search products..." /> -->
+
+  <!-- input Search Using signal way  -->
+
+  <input
+    type="search"
+    (input)="searchText.set($any($event.target).value)"
+    class="text-4xl border border-green-400 rounded-md w-1/2 px-4 py-2"
+    placeholder="Search products . . ." />
 </div>
 
 <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-4 my-7">
   <!-- Displaying products -->
-  @for (product of products | filter : searchText; track product.id) {
+  @for (product of filteredProducts() ; track product.id) {
   <app-product-item
     [ProductInput]="product"
     (fireAddToCart)="addtoCart($event)">
