@@ -6,8 +6,8 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const platformId = inject(PLATFORM_ID);
 
   if (isPlatformBrowser(platformId)) {
-    console.log(req);
     const tokenn = localStorage.getItem('UserToken')
+
     if (tokenn) {
       req = req.clone({
         setHeaders: {

@@ -38,7 +38,7 @@
 
     <label
       for="floating_email"
-      class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+      class="py-2 peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
       Email
     </label>
     <!-- Email error Alert -->
@@ -76,7 +76,7 @@
 
     <label
       for="floating_password"
-      class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+      class="peer-focus:font-medium absolute text-xl text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
       Password
     </label>
 
@@ -102,21 +102,28 @@
     <app-error-message [Control]="passwordControl"></app-error-message>
   </div>
 
-  <!-- =================================================== Submit Button ====================================== -->
-  <button
-    type="submit"
-    [disabled]="loginForm.invalid || isLoading()"
-    class="text-blue-500 bg-slate-300 ms-auto font-extrabold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-all duration-200 flex items-center justify-center gap-2"
-    [ngClass]="{
+  <div class="flex items-center justify-center space-x-3">
+
+    <!-- =================================================== Submit Button ====================================== -->
+    <button
+      type="submit"
+      [disabled]="loginForm.invalid || isLoading()"
+      class="text-blue-500 bg-slate-300 ms-auto font-extrabold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-all duration-200 flex items-center justify-center gap-2"
+      [ngClass]="{
       'cursor-not-allowed': loginForm.invalid || isLoading(),
       'hover:bg-blue-800 text-white': loginForm.valid && !isLoading()
     }">
-    @if (isLoading()) {
-    <i class="fa-solid fa-spinner fa-spin"></i>
-    <span>Loading . . .</span>
-    } @else {
-    <span>login</span>
-    }
-  </button>
+      @if (isLoading()) {
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <span>Loading . . .</span>
+      } @else {
+      <span>login</span>
+      }
+    </button>
 
+    <!--==================================================== Forget Password ===================================== -->
+    <a routerLink="/auth/forgetPassword"
+      class="text-sky-300  cursor-pointer font-medium text-xl">ForgetPassword</a>
+
+  </div>
 </form>

@@ -27,6 +27,7 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: '',
     loadComponent: () => import('./core/pages/Authentication/login/login').then((c) => c.Login),
@@ -46,7 +47,6 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/pages/categories/categories').then((c) => c.Categories),
   },
-
   {
     path: 'productsDetails/:id',
     canActivate: [authGuard],
@@ -61,21 +61,15 @@ export const routes: Routes = [
   {
     path: 'ckeckOut/:cartId',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/pages/checkout/checkout').then((c) => c.Checkout),
+    loadComponent: () => import('./features/pages/checkout/checkout').then((c) => c.Checkout),
   },
   {
     path: 'allorders',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/pages/allorders/allorders').then((c) => c.Allorders),
+    loadComponent: () => import('./features/pages/allorders/allorders').then((c) => c.Allorders),
   },
 
-
-
-
-
-
+  // Wild Card
   {
     path: '**',
     loadComponent: () => import('./core/pages/not-found/not-found').then((c) => c.NotFound),

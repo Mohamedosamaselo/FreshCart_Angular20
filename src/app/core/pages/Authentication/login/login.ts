@@ -1,7 +1,7 @@
 import { isPlatformBrowser, NgClass } from '@angular/common';
 import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { finalize, delay, Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth-service';
 import { LoginUser } from '../../../interfaces/LoginUser';
@@ -34,7 +34,8 @@ const Navigation_Delay = 500; // 2 seconds
     NgClass,
     CustomInputComponent,
     ErrorMessage,
-    NgxSpinnerComponent
+    NgxSpinnerComponent,
+    RouterLink
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
@@ -57,11 +58,15 @@ export class Login implements OnInit {
   apiError = signal<string>('');
   showPassword = signal(false);
 
+
+
   // ====================================
   // LIFECYCLE
   // ====================================
 
   ngOnInit(): void {
+
+
     this.initializeForm();
 
     /** spinner starts on init */
@@ -73,10 +78,12 @@ export class Login implements OnInit {
     }, 2000);
   }
 
+
+
+
   // ====================================
   // FORM INITIALIZATION
   // ====================================
-
   private initializeForm(): void {
     this.loginForm = this.fb.group({
       email: [

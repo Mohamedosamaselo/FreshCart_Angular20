@@ -9,6 +9,7 @@ import { Api_Base_Url } from '../../../token/token';
 import { enviroment } from '../../../environments/environment.prod';
 import { Router } from '@angular/router';
 import { CustomJwtPayload } from '../../interfaces/CustomJwtPayload';
+import { ResetPassword } from '../../interfaces/reset-password';
 
 @Injectable({
   providedIn: 'root',
@@ -63,9 +64,11 @@ export class AuthService {
       this._userToken = Token; // set Token in memory
 
       try {
+        localStorage.setItem('UserToken', this._userToken) // Set Token in localStorage
         const data: CustomJwtPayload = jwtDecode(this._userToken); // Decode Token
         this.user.next(data);       // update User of type behaviour Subject  With UpdatedTokenData
-      } catch (error) {
+      }
+      catch (error) {
         console.log('invalid Token !', error);
         this.user.next(null); // update User With UpdatedTokenData
       }
@@ -81,9 +84,9 @@ export class AuthService {
     return this._userToken;
   }
 
-  // ----------------------------
+  // =============================
   // signOut Method
-  // ----------------------------
+  // =============================
   logout(): void {
     this._userToken = null; // set Token with null
     this.user.next(null); // user logged out // here i will update the stauts of the user
@@ -97,7 +100,6 @@ export class AuthService {
   //   const data = jwtDecode(this.token); // decode token
   //   this.user.next(data); // update User
   // }
-
 
 
 
@@ -117,5 +119,25 @@ export class AuthService {
     return true;
   }
 
+
+  // =============================
+  // Forget Password  Method
+  // =============================
+  forgetPassword(emaildata: object): Observable<any> {
+    return this._http.post(`${this._baseUrl}/auth/forgotPasswords`, emaildata)
+  }
+
+  // =============================
+  // verifyResetCode  Method
+  // =============================
+  verifyResetCode(ResetCodeData: object): Observable<any> {
+    return this._http.post(`${this._baseUrl}/auth/verifyResetCode`, ResetCodeData)
+  }
+  // =============================
+  // Reset Password Method
+  // =============================
+  resetPassword(data: object): Observable<any> {
+    return this._http.put(`${this._baseUrl}/auth/resetPassword`, data)
+  }
 
 }
