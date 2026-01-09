@@ -23,6 +23,7 @@ export class RecentProducts implements OnInit {
   toastr = inject(ToastrService);
   // products: product[] = [];
   products = signal<product[]>([]);
+
   // searchText: string = "";
   searchText = signal('');
 
