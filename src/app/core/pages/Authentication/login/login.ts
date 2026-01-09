@@ -147,7 +147,6 @@ export class Login implements OnInit {
   }
 
 
-
   // ====================================
   // RESPONSE HANDLERS
   // ====================================
@@ -165,6 +164,7 @@ export class Login implements OnInit {
       this.navigateToHome();
     }
   }
+
   private handleError(error: any): void {
     const errorMessage = error?.error?.message || 'Login failed. Please try again.';
     this.apiError.set(errorMessage);
