@@ -12,6 +12,7 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./core/pages/Authentication/login/login').then((c) => c.Login),
+        title: 'login page'
       },
       {
         path: 'register',
@@ -36,6 +37,7 @@ export const routes: Routes = [
     path: 'home',
     canActivate: [authGuard],
     loadComponent: () => import('./features/pages/home/home').then((c) => c.Home),
+    title: 'home page'
   },
   {
     path: 'brands',

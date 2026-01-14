@@ -5,6 +5,7 @@ import { inject, PLATFORM_ID } from '@angular/core';
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const platformId = inject(PLATFORM_ID);
 
+  // execute this code inside client side
   if (isPlatformBrowser(platformId)) {
     const tokenn = localStorage.getItem('UserToken')
 

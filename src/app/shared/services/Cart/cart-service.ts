@@ -1,16 +1,21 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, OnInit } from '@angular/core';
 import { enviroment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
+
   // DependencyInjection
   private http = inject(HttpClient);
   // variables
   private baseUrl = enviroment.BaseUrl;
+
+  cartCounter: BehaviorSubject<number> = new BehaviorSubject(0);
+
+
 
 
   // private token: string = JSON.stringify(localStorage.getItem('UserToken')); // change token object to string

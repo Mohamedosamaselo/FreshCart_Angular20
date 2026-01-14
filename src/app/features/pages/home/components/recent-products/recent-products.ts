@@ -28,15 +28,11 @@ export class RecentProducts implements OnInit {
   searchText = signal('');
 
 
-
-
-
-
   ngOnInit(): void {
     this.getProducts();
   }
 
-  // Compute Filtered List
+  // Compute Filtered List for Search input
   filteredProducts = computed(() => {
     const text = this.searchText().toLowerCase().trim();
 
@@ -49,14 +45,13 @@ export class RecentProducts implements OnInit {
   })
 
 
-
   getProducts(): void {
     this._productService
       .getProducts()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res) => {
-          console.log(res.data);
+          console.log(res, 'getProducts');
           this.products.set(res.data);
         },
         error: (err) => {
@@ -79,6 +74,17 @@ export class RecentProducts implements OnInit {
       .subscribe({
         next: (value) => {
           this.toastr.success(value.message, 'Hello !');
+          // console.log(value.numOfCartItems
+          //   , 'numOfCartItems');
+          this._cartService.cartCounter.next(value.numOfCartItems); // we set numberofCartItem inside Counter
+
+          // console.log(this._cartService.cartCounter.subscribe({
+          //   next: (value) => {
+          //     console.log(value);
+
+          //   }
+          // }));
+
         },
         error: (err) => {
           console.log(err);

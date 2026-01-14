@@ -31,8 +31,10 @@ import { NgxSpinnerComponent } from 'ngx-spinner';
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })
-export class Cart implements OnInit {
 
+
+export class Cart implements OnInit {
+  // variables
   cartDetails?: CartResponse;
   dataSource = new MatTableDataSource<product>();
   isLoading = false;
@@ -76,7 +78,11 @@ export class Cart implements OnInit {
         finalize(() => (this.isLoading = false))
       )
       .subscribe({
-        next: res => this.updateCartState(res),
+        next: (res) => {
+          this.updateCartState(res),
+            console.log(res);
+
+        },
         error: this.handleError
       });
   }
@@ -121,11 +127,16 @@ export class Cart implements OnInit {
   private updateCartState(res: CartResponse): void {
     this.cartDetails = res;
     this.dataSource.data = res.data.products;
+    this.cartService.cartCounter.next(res.numOfCartItems); // update Counter Numer of cartIcon to Displayed
+    // console.log(res, 'numOfCartItem');
+
   }
 
   private clearCartState(): void {
     this.cartDetails = undefined;
     this.dataSource.data = [];
+    this.cartService.cartCounter.next(0); // update Counter Numer of cartIcon to Displayed
+
   }
 
   private handleError(error: unknown): void {
